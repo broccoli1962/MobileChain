@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: b9e2b29ade039c04b94c6a5181993c05
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - PanelPrefab: {fileID: 5839826429917369031, guid: 087fac03fe1c8ba45bed164e41dc1056, type: 3}
+  - PanelImg: {instanceID: 0}
+  - FireSprite: {fileID: 6646352699581877773, guid: fbf6ddda36fc7f544b916960dc135b40, type: 3}
+  - WaterSprite: {fileID: -5035028866244746415, guid: b3b61d10a79e1ba4b9098b5661195101, type: 3}
+  - grassSprite: {fileID: 1419431232111587725, guid: 3c10ab8bd985f5546b1a399c2e4059ea, type: 3}
+  - lightSprite: {fileID: 2375906795923478599, guid: 47c5c0f4f27ef844db2cf497ffd279c4, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
