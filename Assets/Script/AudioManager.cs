@@ -4,18 +4,16 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    AudioSource audio;
+    public AudioSource audioSource;
+    [Header ("PanelPopSound")]
     public AudioClip bloom;
-
-    public static AudioManager caudio;
 
     private void Start()
     {
-        caudio = this;
-        audio = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
     }
     public void PopSound()
     {
-        audio.PlayOneShot(bloom);
+        audioSource.PlayOneShot(bloom);
     }
 }

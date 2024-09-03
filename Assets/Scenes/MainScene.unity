@@ -552,8 +552,9 @@ GameObject:
   m_Component:
   - component: {fileID: 993291137}
   - component: {fileID: 993291138}
+  - component: {fileID: 993291139}
   m_Layer: 0
-  m_Name: PanelSpawner
+  m_Name: PanelManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -594,6 +595,18 @@ MonoBehaviour:
   grassSprite: {fileID: 1419431232111587725, guid: 3c10ab8bd985f5546b1a399c2e4059ea, type: 3}
   lightSprite: {fileID: 2375906795923478599, guid: 47c5c0f4f27ef844db2cf497ffd279c4, type: 3}
   panels: []
+--- !u!114 &993291139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 993291136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 811600c293316aa488fe61b27338a367, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1000883598
 GameObject:
   m_ObjectHideFlags: 0
@@ -735,6 +748,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3a68fd290fa39c43a399245fa9995f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
   bloom: {fileID: 8300000, guid: 9d5277672b47d834faecb850479ff917, type: 3}
 --- !u!1 &1335880793
 GameObject:

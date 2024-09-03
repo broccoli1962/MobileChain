@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class TouchPanel : MonoBehaviour
 {
+    PanelInteract pi;
+
+    private void Start()
+    {
+        GameObject obj = GameObject.Find("PanelManager");
+        pi = obj.GetComponent<PanelInteract>();
+    }
     private void OnMouseDown()
     {
-        CreatePanel.cpanel.click(gameObject);
+        pi.click(gameObject);
     }
 }

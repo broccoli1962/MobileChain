@@ -5,6 +5,7 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - panelPrefab: {fileID: 5839826429917369031, guid: 087fac03fe1c8ba45bed164e41dc1056, type: 3}
+  - linePrefab: {fileID: 7071335966937171839, guid: 0b2f98b7a881a9a4788c7f867a96efc8, type: 3}
   - panelImg: {instanceID: 0}
   - fireSprite: {fileID: 6646352699581877773, guid: fbf6ddda36fc7f544b916960dc135b40, type: 3}
   - waterSprite: {fileID: -5035028866244746415, guid: b3b61d10a79e1ba4b9098b5661195101, type: 3}
