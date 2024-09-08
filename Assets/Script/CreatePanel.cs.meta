@@ -6,11 +6,11 @@ MonoImporter:
   defaultReferences:
   - panelPrefab: {fileID: 5839826429917369031, guid: 087fac03fe1c8ba45bed164e41dc1056, type: 3}
   - linePrefab: {fileID: 7071335966937171839, guid: 0b2f98b7a881a9a4788c7f867a96efc8, type: 3}
-  - panelImg: {instanceID: 0}
   - fireSprite: {fileID: 6646352699581877773, guid: fbf6ddda36fc7f544b916960dc135b40, type: 3}
   - waterSprite: {fileID: -5035028866244746415, guid: b3b61d10a79e1ba4b9098b5661195101, type: 3}
   - grassSprite: {fileID: 1419431232111587725, guid: 3c10ab8bd985f5546b1a399c2e4059ea, type: 3}
   - lightSprite: {fileID: 2375906795923478599, guid: 47c5c0f4f27ef844db2cf497ffd279c4, type: 3}
+  - heartSprite: {fileID: -2866932673457102115, guid: f3c1b9db3a03e60488a46056c22e63d7, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

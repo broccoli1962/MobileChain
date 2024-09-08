@@ -8,12 +8,15 @@ using UnityEngine.UIElements;
 public class PanelInteract : MonoBehaviour
 {
     List<GameObject> filter = new List<GameObject>();
+    List<GameObject> copyList = new List<GameObject>(); //패널 후처리 제거용
     List<List<GameObject>> next = new List<List<GameObject>>();
     CreatePanel cp;
     AudioManager aumg;
+    public static float distance;
 
     private void Start()
     {
+        distance = 7f * (Screen.width / 720f);
         GameObject obj = GameObject.Find("PanelManager");
         cp = obj.GetComponent<CreatePanel>();
         GameObject obj2 = GameObject.Find("AudioManager");
@@ -23,7 +26,7 @@ public class PanelInteract : MonoBehaviour
     public void click(GameObject clickedPanel)
     {
         //중복 클릭 방지
-        if (filter.Count > 0) return;
+        if (filter.Count > 0 || cp.panels.Count != cp.maxPanelCount) return;
 
         //색깔 분류 : 서로같은 색 리스트 생성
         SpriteRenderer prefabSprite = clickedPanel.GetComponent<SpriteRenderer>();
@@ -71,18 +74,37 @@ public class PanelInteract : MonoBehaviour
             next.RemoveAt(0);
             foreach(GameObject obj in list)
             {
-                cp.panels.Remove(obj);
-                Destroy(obj);
+                SpriteRenderer spriteColor = obj.GetComponent<SpriteRenderer>();
+
+                if(spriteColor != null)
+                {
+                    Color color = spriteColor.color;
+                    color.a = 0.5f;
+                    spriteColor.color = color;
+                }
+                copyList.Add(obj);
             }
             aumg.PopSound();
             Invoke("filterRemove", 0.2f);
         } else
         {
-            DeleteLine();
+            deletePanel();
+            deleteLine();
         }
     }
+    
+    private void deletePanel()
+    {
+        foreach (GameObject obj in copyList)
+        {
+            cp.panels.Remove(obj);
+            Destroy(obj);
+        }
+        cp.StartCoroutine(cp.create);
+        copyList.Clear();
+    }
 
-    private void DeleteLine()
+    private void deleteLine()
     {
         foreach (GameObject deletedLine in GameObject.FindGameObjectsWithTag("Line"))
         {
@@ -95,12 +117,12 @@ public class PanelInteract : MonoBehaviour
         List<GameObject> list = new List<GameObject>();
         foreach (GameObject obj2 in filter)
         {
-            if (nearObject(obj, obj2, 6.3f)) list.Add(obj2);
+            if (nearObject(obj, obj2)) list.Add(obj2);
         }
         return list;
     }
 
-    private Boolean nearObject(GameObject obj, GameObject obj2, float distance)
+    private Boolean nearObject(GameObject obj, GameObject obj2)
     {
         SpriteRenderer render1 = obj.GetComponent<SpriteRenderer>();
         SpriteRenderer render2 = obj2.GetComponent<SpriteRenderer>();
@@ -116,7 +138,7 @@ public class PanelInteract : MonoBehaviour
         finalList.Add(g);
         foreach (GameObject obj in gList)
         {
-            if (!finalList.Contains(obj) && nearObject(g,obj,6.3f))
+            if (!finalList.Contains(obj) && nearObject(g,obj))
             {
                 insertList(obj, gList, finalList);
             }
@@ -152,6 +174,10 @@ public class PanelInteract : MonoBehaviour
         else if (s1 == cp.grassSprite)
         {
             return Color.green;
+        }
+        else if (s1 == cp.heartSprite)
+        {
+            return Color.magenta;
         }
         return Color.yellow;
     }
