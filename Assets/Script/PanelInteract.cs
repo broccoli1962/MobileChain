@@ -12,22 +12,27 @@ public class PanelInteract : MonoBehaviour
     List<List<GameObject>> next = new List<List<GameObject>>();
     CreatePanel cp;
     AudioManager aumg;
+    TapCount ta;
     public static float distance;
 
     private void Start()
     {
-        distance = 7f * (Screen.width / 720f);
+        distance = 9.5f; //* (Screen.width / 720f);
+        Debug.Log(distance);
         GameObject obj = GameObject.Find("PanelManager");
         cp = obj.GetComponent<CreatePanel>();
         GameObject obj2 = GameObject.Find("AudioManager");
         aumg = obj2.GetComponent<AudioManager>();
+        ta = GameObject.Find("TouchCountBase").GetComponent<TapCount>();
     }
 
     public void click(GameObject clickedPanel)
     {
         //중복 클릭 방지
-        if (filter.Count > 0 || cp.panels.Count != cp.maxPanelCount) return;
+        if (filter.Count > 0 || cp.panels.Count < cp.maxPanelCount || next.Count > 0) return;
 
+        //탭 감소
+        ta.TapDown(1);
         //색깔 분류 : 서로같은 색 리스트 생성
         SpriteRenderer prefabSprite = clickedPanel.GetComponent<SpriteRenderer>();
         List<GameObject> colorList = new List<GameObject>();
@@ -42,13 +47,16 @@ public class PanelInteract : MonoBehaviour
         filter = insertList(clickedPanel, colorList, new List<GameObject>()); //클릭한 패널과 가까운 같은 색패널 리스트 반환
         filterSort();
         filterRemove();
+        cp.PanelTime(true);
     }
 
     private void filterSort()
     {
+        int panelAmount = filter.Count; //부순 개수
+        //한 턴에 부순 개수 계산
+
         GameObject deletedPanel = filter[0]; //처음 클릭한거
         filter.RemoveAt(0);
-
         next.Add(new List<GameObject> { deletedPanel }); //처음 클릭한거 이중리스트 삽입
         while (filter.Count > 0) //필터가 빌때까지 돌린다.
         {
@@ -90,6 +98,7 @@ public class PanelInteract : MonoBehaviour
         {
             deletePanel();
             deleteLine();
+            cp.PanelTime(false);
         }
     }
     

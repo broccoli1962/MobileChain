@@ -7,32 +7,43 @@ using UnityEngine.EventSystems;
 public class TouchPanel : MonoBehaviour
 {
     PanelInteract pi;
+    Vector3 MousePosition;
+    Camera Camera;
 
     private void Start()
     {
+        Camera = GameObject.Find("Main Camera").GetComponent<Camera>();
         pi = GameObject.Find("PanelManager").GetComponent<PanelInteract>();
     }
 
-    //private void Update()
-    //{
-    //    if (Input.touchCount > 0)
-    //    {
-    //        Touch touch = Input.GetTouch(0);
-    //        if(touch.phase == TouchPhase.Began)
-    //        {
-    //            Vector2 point = Camera.main.ScreenToWorldPoint(touch.position);
-    //            Ray2D ray = new Ray2D(point, Vector2.zero);
-    //            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
-
-    //            if(hit.collider != null && hit.collider.tag == "Panel")
-    //            {
-    //                pi.click(hit.collider.gameObject);
-    //            }
-    //        }
-    //    }
-    //}
-    void OnMouseDown()
+    private void Update()
     {
-        pi.click(this.gameObject);
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit2D[] rayhit = Physics2D.GetRayIntersectionAll(Camera.main.ScreenPointToRay(Input.mousePosition));
+            foreach (RaycastHit2D ray in rayhit) {
+                if (ray.transform.CompareTag("UI"))
+                {
+                    return;
+                }
+            }
+            foreach(RaycastHit2D ray in rayhit)
+            {
+                if (ray.transform.CompareTag("Panel"))
+                {
+                    GameObject hitObj = ray.transform.gameObject;
+                    pi.click(hitObj);
+                    return;
+                }
+            }
+            //panel들 클릭 하는 쏘스
+            //RaycastHit2D rayhit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Input.mousePosition));
+            //if (rayhit.transform!=null&&rayhit.transform.CompareTag("Panel"))
+            //{
+            //    GameObject hitObj = rayhit.transform.gameObject;
+            //    Debug.Log(hitObj.name);
+            //    pi.click(hitObj);
+            //}
+        }
     }
 }

@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.VFX;
 using Random = UnityEngine.Random;
 
 public class CreatePanel : MonoBehaviour
@@ -22,6 +24,7 @@ public class CreatePanel : MonoBehaviour
     //Boolean runPanelCreate = true;
 
     public List<GameObject> panels;
+    private List<AccData> accList = new List<AccData>();
     public IEnumerator create;
     Boolean createRun = true;
 
@@ -44,12 +47,61 @@ public class CreatePanel : MonoBehaviour
     {
         while (createRun)
         {
-            PanelDrop();
             if (panels.Count == maxPanelCount)
             {
                 StopCoroutine(create);
             }
+            else
+            {
+                PanelDrop();
+            }
             yield return new WaitForSeconds(0.05f);
+        }
+    }
+
+    public void PanelTime(bool enable)
+    {
+        foreach(GameObject panel in panels)
+        {
+            Rigidbody2D rb = panel.GetComponent<Rigidbody2D>();
+            if (enable)
+            {
+                accList.Add(new AccData(rb));
+            }
+            rb.bodyType = enable ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
+        }
+
+        if (!enable)
+        {
+            foreach (AccData acc in accList)
+            {
+                acc.accept();
+            }
+            accList.Clear();
+        }
+    }
+
+    class AccData
+    {
+        float drag, mass, angulerVel;
+        Vector2 vel;
+        Rigidbody2D rb;
+        public AccData(Rigidbody2D body)
+        {
+            this.rb = body;
+            this.drag = body.linearDamping;
+            this.mass = body.mass;
+            this.vel = body.linearVelocity;
+            this.angulerVel = body.angularVelocity;
+        }
+
+        public void accept()
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic; //? 왜 써야하는지 모르겠음 경고 나옴
+            rb.linearDamping = drag;
+            rb.mass = mass;
+            rb.linearVelocity = vel;
+            rb.angularVelocity = angulerVel;
         }
     }
 
@@ -81,20 +133,3 @@ public class CreatePanel : MonoBehaviour
         panels.Add(item);
     }
 }
-
-
-//private void Update()
-//{
-//    if (panels.Count > maxPanelCount)
-//    {
-//        runPanelCreate = false;
-//    }else if(panels.Count <= maxPanelCount && !runPanelCreate) 
-//    {
-//        runPanelCreate = true;   
-//    }
-
-//    if (runPanelCreate)
-//    {
-//        PanelDrop();
-//    }
-//}

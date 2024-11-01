@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8207983789130849591}
   - component: {fileID: 3536860110261805256}
   - component: {fileID: 5320092828396932757}
-  - component: {fileID: 6843860526813013329}
   - component: {fileID: -2945986610764474567}
   m_Layer: 5
   m_Name: 4Panel
@@ -37,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1, y: 1}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &3536860110261805256
 SpriteRenderer:
@@ -56,6 +55,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -80,7 +82,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 6646352699581877773, guid: fbf6ddda36fc7f544b916960dc135b40, type: 3}
+  m_Sprite: {fileID: -5035028866244746415, guid: b3b61d10a79e1ba4b9098b5661195101, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -93,7 +95,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!50 &5320092828396932757
 Rigidbody2D:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -104,8 +106,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_GravityScale: 5
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -118,18 +120,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &6843860526813013329
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5839826429917369031}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf5fb2e7e086fb342be00583ef8c0f85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!70 &-2945986610764474567
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -138,6 +128,7 @@ CapsuleCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5839826429917369031}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -161,7 +152,8 @@ CapsuleCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0.49999997}
   m_Size: {x: 1.1, y: 1.1}
   m_Direction: 0
