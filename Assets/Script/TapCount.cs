@@ -8,15 +8,13 @@ public class TapCount : MonoBehaviour
     //탭을 다하였을 경우 다음 턴으로 넘어가기 (턴을 관리하는 스크립트 필요)
     [SerializeField]
     public GameObject[] tap;
-    CharacterRotate rotate;
     SystemManager system;
-    private int tapCount = 0;
+    public int tapCount = 0;
     
     private void Start()
     {
         tapCount = tap.Length;
         system = GameObject.Find("GameSystemManager").GetComponent<SystemManager>();
-        rotate = GameObject.Find("CharacterSlotLine").GetComponent<CharacterRotate>();
     }
 
     public void TapDown(int t)
@@ -31,24 +29,19 @@ public class TapCount : MonoBehaviour
             }
             if (tapCount <= 0)
             {
-                system.turn = false;
-                NextTurn();
-                Debug.Log(rotate.GetFirstSlot());
+                StartCoroutine(system.AttackLogic());
             }
         }
     }
 
-    public void NextTurn()
+    public void EnableTapCount()
     {
-        system.turn = true;
-        tapCount = system.TotaltapCount;
-        for(int i = 0; i<tap.Length; i++)
+        for (int i = 0; i < tap.Length; i++)
         {
             if (tap[i] != null)
             {
                 tap[i].gameObject.SetActive(true);
             }
         }
-        rotate.NextTurn();
     }
 }

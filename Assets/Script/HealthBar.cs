@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,10 +17,18 @@ public class HealthBar : MonoBehaviour
 
         fill.color = gradient.Evaluate(1f);
     }
-    public void SetHealth(int Health)
+    public IEnumerator SetHealth(int Health) //현재체력
     {
-        slider.value = Health;
+        while (slider.value > Health) {
+            if(slider.value <= 0)
+            {
+                yield break;
+            }
 
-        fill.color = gradient.Evaluate(slider.normalizedValue);
+            var value = Mathf.Max(slider.value - slider.maxValue/40, Health);
+            slider.value = value;
+            fill.color = gradient.Evaluate(slider.normalizedValue);
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 }

@@ -9,14 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b83c0aca1dc1d7148a9772abeffa4db0, type: 3}
-  m_Name: No0
+  m_Script: {fileID: 11500000, guid: 21ce008c4e4fd004799b472ccdd6f277, type: 3}
+  m_Name: M.no2
   m_EditorClassIdentifier: 
-  Number: 0
-  Health: 100
+  Number: 1
+  Health: 3000
   Damage: 100
-  Heal: 100
-  Armor: 100
-  image: {fileID: 10906, guid: 0000000000000000f000000000000000, type: 0}
-  ability1: 0
-  ability2: 0
+  image: {fileID: 10912, guid: 0000000000000000f000000000000000, type: 0}

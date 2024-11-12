@@ -85,5 +85,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a6826345b077204b93ab769317d7042, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character: {fileID: 11400000, guid: 073458f0d07c9f84397e739606baa987, type: 2}
+  CharacterNumber: 0
   image: {fileID: 0}

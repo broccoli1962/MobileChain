@@ -10,50 +10,63 @@ public class PanelInteract : MonoBehaviour
     List<GameObject> filter = new List<GameObject>();
     List<GameObject> copyList = new List<GameObject>(); //패널 후처리 제거용
     List<List<GameObject>> next = new List<List<GameObject>>();
-    CreatePanel cp;
-    AudioManager aumg;
-    TapCount ta;
+    [SerializeField] private ParticleSystem explosedPanel;
+    CreatePanel createPanel;
+    AudioManager audioManage;
+    TapCount tcount;
+    SystemManager system;
     public static float distance;
+    bool clicked;
 
     private void Start()
     {
-        distance = 9.5f; //* (Screen.width / 720f);
-        Debug.Log(distance);
+        distance = 12f; //* (Screen.width / 720f);
+        system = SystemManager.Instance;
         GameObject obj = GameObject.Find("PanelManager");
-        cp = obj.GetComponent<CreatePanel>();
+        createPanel = obj.GetComponent<CreatePanel>();
         GameObject obj2 = GameObject.Find("AudioManager");
-        aumg = obj2.GetComponent<AudioManager>();
-        ta = GameObject.Find("TouchCountBase").GetComponent<TapCount>();
+        audioManage = obj2.GetComponent<AudioManager>();
+        tcount = GameObject.Find("TouchCountBase").GetComponent<TapCount>();
     }
 
     public void click(GameObject clickedPanel)
     {
-        //중복 클릭 방지
-        if (filter.Count > 0 || cp.panels.Count < cp.maxPanelCount || next.Count > 0) return;
+        if (clicked)
+        {
+            Debug.Log("중복 방지");
+            return;
+        }
 
-        //탭 감소
-        ta.TapDown(1);
+        clicked = true;
+
+        if (!system.turn)
+        {
+            tcount.TapDown(1);
+        }
+        
         //색깔 분류 : 서로같은 색 리스트 생성
         SpriteRenderer prefabSprite = clickedPanel.GetComponent<SpriteRenderer>();
         List<GameObject> colorList = new List<GameObject>();
-        for (int i = 0; i < cp.panels.Count; i++)
+        for (int i = 0; i < createPanel.panels.Count; i++)
         {
-            if (cp.panels[i].GetComponent<SpriteRenderer>().sprite == prefabSprite.sprite)
+            if (createPanel.panels[i].GetComponent<SpriteRenderer>().sprite == prefabSprite.sprite)
             {
-                colorList.Add(cp.panels[i]);
+                colorList.Add(createPanel.panels[i]);
             }
         }
         //필터
         filter = insertList(clickedPanel, colorList, new List<GameObject>()); //클릭한 패널과 가까운 같은 색패널 리스트 반환
         filterSort();
         filterRemove();
-        cp.PanelTime(true);
+        createPanel.PanelTime(true);
     }
 
     private void filterSort()
     {
-        int panelAmount = filter.Count; //부순 개수
+        //부순 개수
+        system.totalBreak += filter.Count;
         //한 턴에 부순 개수 계산
+        //Debug.Log(system.Totalbreak);
 
         GameObject deletedPanel = filter[0]; //처음 클릭한거
         filter.RemoveAt(0);
@@ -80,36 +93,69 @@ public class PanelInteract : MonoBehaviour
         {
             List<GameObject> list = next[0];
             next.RemoveAt(0);
-            foreach(GameObject obj in list)
+            foreach (GameObject obj in list)
             {
                 SpriteRenderer spriteColor = obj.GetComponent<SpriteRenderer>();
 
-                if(spriteColor != null)
+                if (spriteColor != null)
                 {
                     Color color = spriteColor.color;
                     color.a = 0.5f;
                     spriteColor.color = color;
                 }
+                    
+                Vector3 centerPosition = obj.GetComponent<SpriteRenderer>().bounds.center;
+                ParticleColor(spriteColor);
+                ParticleSystem particleInstance = Instantiate(explosedPanel, centerPosition, Quaternion.identity);
+                particleInstance.Play();
+                Destroy(particleInstance.gameObject, particleInstance.main.duration);
+
                 copyList.Add(obj);
             }
-            aumg.PopSound();
+            audioManage.PopSound();
             Invoke("filterRemove", 0.2f);
         } else
         {
             deletePanel();
             deleteLine();
-            cp.PanelTime(false);
+            createPanel.PanelTime(false);
+            clicked = false;
         }
     }
     
+    void ParticleColor(SpriteRenderer sprite)
+    {
+        ParticleSystem.MainModule main = explosedPanel.main;
+        if (sprite.sprite == createPanel.fireSprite)
+        {
+            main.startColor = new ParticleSystem.MinMaxGradient(Color.white, Color.red);//인자값 = 2번째색, 1번째색
+        }
+        else if (sprite.sprite == createPanel.waterSprite)
+        {
+            main.startColor = new ParticleSystem.MinMaxGradient(Color.white, Color.blue);
+        }
+        else if (sprite.sprite == createPanel.lightSprite)
+        {
+            main.startColor = new ParticleSystem.MinMaxGradient(Color.white, Color.yellow);
+        }
+        else if (sprite.sprite == createPanel.grassSprite)
+        {
+            main.startColor = new ParticleSystem.MinMaxGradient(Color.white, Color.magenta);
+        }
+        else if (sprite.sprite == createPanel.heartSprite)
+        {
+            main.startColor = new ParticleSystem.MinMaxGradient(Color.white, Color.magenta);
+        }
+    }
+
     private void deletePanel()
     {
         foreach (GameObject obj in copyList)
         {
-            cp.panels.Remove(obj);
+            createPanel.panels.Remove(obj);
             Destroy(obj);
         }
-        cp.StartCoroutine(cp.create);
+        createPanel.StartCoroutine(createPanel.create);
         copyList.Clear();
     }
 
@@ -160,7 +206,7 @@ public class PanelInteract : MonoBehaviour
         SpriteRenderer render1 = obj.GetComponent<SpriteRenderer>();
         SpriteRenderer render2 = obj2.GetComponent<SpriteRenderer>();
 
-        LineRenderer line = Instantiate(cp.linePrefab, gameObject.transform).GetComponent<LineRenderer>();
+        LineRenderer line = Instantiate(createPanel.linePrefab, gameObject.transform).GetComponent<LineRenderer>();
 
         Color color = LineColor(render1.sprite);
         line.startColor = color;
@@ -172,19 +218,19 @@ public class PanelInteract : MonoBehaviour
 
     private Color LineColor(Sprite s1)
     {
-        if (s1 == cp.fireSprite)
+        if (s1 == createPanel.fireSprite)
         {
             return Color.red;
         }
-        else if (s1 == cp.waterSprite)
+        else if (s1 == createPanel.waterSprite)
         {
             return Color.blue;
         }
-        else if (s1 == cp.grassSprite)
+        else if (s1 == createPanel.grassSprite)
         {
             return Color.green;
         }
-        else if (s1 == cp.heartSprite)
+        else if (s1 == createPanel.heartSprite)
         {
             return Color.magenta;
         }

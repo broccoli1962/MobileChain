@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d9370726fbf5fac44991105131a6204e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - HealthBar: {instanceID: 0}
+  - character: {instanceID: 0}
+  - AttackParticle: {fileID: 7335150146480523833, guid: 02865b0182a03b2428feeb788de8df18, type: 3}
+  - image: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

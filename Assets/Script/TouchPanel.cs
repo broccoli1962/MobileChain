@@ -9,41 +9,56 @@ public class TouchPanel : MonoBehaviour
     PanelInteract pi;
     Vector3 MousePosition;
     Camera Camera;
+    SystemManager system;
 
     private void Start()
     {
         Camera = GameObject.Find("Main Camera").GetComponent<Camera>();
         pi = GameObject.Find("PanelManager").GetComponent<PanelInteract>();
+        system = GameObject.Find("GameSystemManager").GetComponent<SystemManager>();
     }
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
+            int monsterLayerMask = LayerMask.GetMask("Monster");
+            
             RaycastHit2D[] rayhit = Physics2D.GetRayIntersectionAll(Camera.main.ScreenPointToRay(Input.mousePosition));
-            foreach (RaycastHit2D ray in rayhit) {
-                if (ray.transform.CompareTag("UI"))
+            RaycastHit2D[] rayhit2 = Physics2D.GetRayIntersectionAll(Camera.main.ScreenPointToRay(Input.mousePosition), Mathf.Infinity, monsterLayerMask);
+            
+            //확인 순서를 잘 정해야한다. monster > ui > panel
+            foreach (RaycastHit2D ray in rayhit2)
+            {
+                //monster click
+                if (ray.transform.CompareTag("Monster") && !system.turn)
                 {
+                    Monster monster = ray.transform.GetComponent<Monster>();
+                    if (monster != null)
+                    {
+                        monster.Selected();
+                    }
                     return;
                 }
             }
-            foreach(RaycastHit2D ray in rayhit)
+            foreach (RaycastHit2D ray in rayhit)
             {
-                if (ray.transform.CompareTag("Panel"))
+                if (ray.transform.CompareTag("UI"))
+                {
+                    Debug.Log("ui 클릭함");
+                    return;
+                }
+            }
+            foreach (RaycastHit2D ray in rayhit)
+            {
+                //panel click
+                if (ray.transform.CompareTag("Panel") && !system.turn)
                 {
                     GameObject hitObj = ray.transform.gameObject;
                     pi.click(hitObj);
                     return;
                 }
             }
-            //panel들 클릭 하는 쏘스
-            //RaycastHit2D rayhit = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Input.mousePosition));
-            //if (rayhit.transform!=null&&rayhit.transform.CompareTag("Panel"))
-            //{
-            //    GameObject hitObj = rayhit.transform.gameObject;
-            //    Debug.Log(hitObj.name);
-            //    pi.click(hitObj);
-            //}
         }
     }
 }
