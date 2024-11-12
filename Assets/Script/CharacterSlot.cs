@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +10,7 @@ public class CharacterSlot : MonoBehaviour
     [SerializeField] private RawImage image;
 
     private CharacterStat characterStat;
-    //characterStat¿¡¼­ ¹ŞÀº Á¤º¸ Ç¥Ãâ½ÃÅ°±â
+    //characterStatì—ì„œ ë°›ì€ ì •ë³´ í‘œì¶œì‹œí‚¤ê¸°
 
     private void Start()
     {
@@ -28,7 +28,7 @@ public class CharacterSlot : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Ä³¸¯ÅÍ ½ºÅÈ¿¡ ¸Â´Â ¹øÈ£ ¾øÀ½" + CharacterNumber);
+            Debug.LogError("ìºë¦­í„° ìŠ¤íƒ¯ì— ë§ëŠ” ë²ˆí˜¸ ì—†ìŒ" + CharacterNumber);
         }
     }
 

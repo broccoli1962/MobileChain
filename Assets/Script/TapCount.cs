@@ -1,11 +1,11 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TapCount : MonoBehaviour
 {
-    //ÅÇ ÇÒ¶§¸¶´Ù ÇÑÄ­ ¾¿ ÁÙ±â
-    //ÅÇÀ» ´ÙÇÏ¿´À» °æ¿ì ´ÙÀ½ ÅÏÀ¸·Î ³Ñ¾î°¡±â (ÅÏÀ» °ü¸®ÇÏ´Â ½ºÅ©¸³Æ® ÇÊ¿ä)
+    //íƒ­ í• ë•Œë§ˆë‹¤ í•œì¹¸ ì”© ì¤„ê¸°
+    //íƒ­ì„ ë‹¤í•˜ì˜€ì„ ê²½ìš° ë‹¤ìŒ í„´ìœ¼ë¡œ ë„˜ì–´ê°€ê¸° (í„´ì„ ê´€ë¦¬í•˜ëŠ” ìŠ¤í¬ë¦½íŠ¸ í•„ìš”)
     [SerializeField]
     public GameObject[] tap;
     SystemManager system;

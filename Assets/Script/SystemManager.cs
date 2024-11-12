@@ -1,4 +1,4 @@
-using NUnit.Framework.Internal;
+ï»¿using NUnit.Framework.Internal;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -13,7 +13,7 @@ public class SystemManager : MonoBehaviour
     public int currentHealth;
     public int totalBreak;
 
-    public List<CharacterStat> clist = new List<CharacterStat>(); //Ä³¸¯ÅÍ Á¤º¸ DB
+    public List<CharacterStat> clist = new List<CharacterStat>(); //ìºë¦­í„° ì •ë³´ DB
 
     [SerializeField] private CharacterRotate crotate;
     [SerializeField] private TapCount tcount;
@@ -62,7 +62,7 @@ public class SystemManager : MonoBehaviour
         
     }
 
-    //Ä³¸¯ÅÍ ½ºÅÈ
+    //ìºë¦­í„° ìŠ¤íƒ¯
     private void LoadCharacterStats()
     {
         CharacterStat[] stats = Resources.LoadAll<CharacterStat>("CharacterStats");
@@ -82,7 +82,7 @@ public class SystemManager : MonoBehaviour
         return null;
     }
 
-    //¸ó½ºÅÍ ½ºÅÈ
+    //ëª¬ìŠ¤í„° ìŠ¤íƒ¯
     private void LoadMonsterStats()
     {
         MonsterStat[] stats = Resources.LoadAll<MonsterStat>("MonsterStats");
@@ -102,10 +102,10 @@ public class SystemManager : MonoBehaviour
 
     public IEnumerator AttackLogic()
     {
-        turn = true; //ÅÇ ±İÁö¿ë bool
+        turn = true; //íƒ­ ê¸ˆì§€ìš© bool
         yield return new WaitForSeconds(2f);
 
-        //ÇÃ·¹ÀÌ¾î ÅÏ
+        //í”Œë ˆì´ì–´ í„´
         MonsterManager monsterManager = GameObject.Find("MonsterManager").GetComponent<MonsterManager>();
         Monster selectMonster = monsterManager.GetMonster();
 
@@ -113,19 +113,19 @@ public class SystemManager : MonoBehaviour
         {
             yield return StartCoroutine(selectMonster.TakeDamage(totalBreak));
         }
-        //¸ó½ºÅÍ ÅÏ
+        //ëª¬ìŠ¤í„° í„´
         StartCoroutine(MonsterAttack());
-        //ÅÏ ÀÌµ¿
+        //í„´ ì´ë™
         tcount.EnableTapCount();
         crotate.NextTurn();
         totalBreak = 0;
         tcount.tapCount = canTapCount;
-        //¸ó½ºÅÍ ÀÎ½ºÅÏ½º Ãß°¡ -> refresh();
+        //ëª¬ìŠ¤í„° ì¸ìŠ¤í„´ìŠ¤ ì¶”ê°€ -> refresh();
         if (monsterManager.NextTarget() == null)
         {
-            Debug.Log("¸ó½ºÅÍ Å¬¸®¾î");
+            Debug.Log("ëª¬ìŠ¤í„° í´ë¦¬ì–´");
             //monsterManager.Monsters.Add();
-            //¸ó½ºÅÍ Ãß°¡
+            //ëª¬ìŠ¤í„° ì¶”ê°€
         }
         
         turn = false;

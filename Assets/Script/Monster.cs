@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
@@ -41,7 +41,7 @@ public class Monster : MonoBehaviour
         }
         else
         {
-            Debug.LogError("¸ó½ºÅÍ ½ºÅÈ¿¡ ¸Â´Â ¹øÈ£ ¾øÀ½" + MonsterStats);
+            Debug.LogError("ëª¬ìŠ¤í„° ìŠ¤íƒ¯ì— ë§ëŠ” ë²ˆí˜¸ ì—†ìŒ" + MonsterStats);
         }
     }
 
@@ -77,10 +77,10 @@ public class Monster : MonoBehaviour
 
     public IEnumerator TakeDamage(int damage)
     {
-        //µ¥¹ÌÁö °è»ê
+        //ë°ë¯¸ì§€ ê³„ì‚°
         CharacterSlot firstSlot = character.GetFirstSlot();
         int power = firstSlot.GetDamage();
-        //ÀÌÆÑÆ®
+        //ì´íŒ©íŠ¸
         ParticleSystem particleInstance = Instantiate(AttackParticle, firstSlot.transform.position, Quaternion.identity);
 
         NowHp = NowHp - damage*power;
@@ -102,13 +102,13 @@ public class Monster : MonoBehaviour
 
         if (NowHp <= 0)
         {
-            Debug.Log("Á×À½");
+            Debug.Log("ì£½ìŒ");
             Destroy(gameObject);
         }
         else
         {
             ConvertIndex();
-            //ÀÎµ¦½º ÀüÈ¯
+            //ì¸ë±ìŠ¤ ì „í™˜
         }
     }
 

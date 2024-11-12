@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -27,7 +27,7 @@ public class TouchPanel : MonoBehaviour
             RaycastHit2D[] rayhit = Physics2D.GetRayIntersectionAll(Camera.main.ScreenPointToRay(Input.mousePosition));
             RaycastHit2D[] rayhit2 = Physics2D.GetRayIntersectionAll(Camera.main.ScreenPointToRay(Input.mousePosition), Mathf.Infinity, monsterLayerMask);
             
-            //»Æ¿Œ º¯º≠∏¶ ¿ﬂ ¡§«ÿæﬂ«—¥Ÿ. monster > ui > panel
+            //ÌôïÏù∏ ÏàúÏÑúÎ•º Ïûò Ï†ïÌï¥ÏïºÌïúÎã§. monster > ui > panel
             foreach (RaycastHit2D ray in rayhit2)
             {
                 //monster click
@@ -45,7 +45,7 @@ public class TouchPanel : MonoBehaviour
             {
                 if (ray.transform.CompareTag("UI"))
                 {
-                    Debug.Log("ui ≈¨∏Ø«‘");
+                    Debug.Log("ui ÌÅ¥Î¶≠Ìï®");
                     return;
                 }
             }

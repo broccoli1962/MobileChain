@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,7 +28,7 @@ public class MonsterManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("∏ÛΩ∫≈Õ πﬂ∞ﬂ ∫“∞°");
+                    Debug.Log("Î™¨Ïä§ÌÑ∞ Î∞úÍ≤¨ Î∂àÍ∞Ä");
                 }
             }
         }
@@ -63,6 +63,6 @@ public class MonsterManager : MonoBehaviour
             selectedMonster.DeSelected();
         }
         monsterIndex = index;
-        Debug.Log(monsterIndex + "º±≈√µ ");
+        Debug.Log(monsterIndex + "ÏÑ†ÌÉùÎê®");
     }
 }

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 public class PanelInteract : MonoBehaviour
 {
     List<GameObject> filter = new List<GameObject>();
-    List<GameObject> copyList = new List<GameObject>(); //ÆĞ³Î ÈÄÃ³¸® Á¦°Å¿ë
+    List<GameObject> copyList = new List<GameObject>(); //íŒ¨ë„ í›„ì²˜ë¦¬ ì œê±°ìš©
     List<List<GameObject>> next = new List<List<GameObject>>();
     [SerializeField] private ParticleSystem explosedPanel;
     CreatePanel createPanel;
@@ -33,7 +33,7 @@ public class PanelInteract : MonoBehaviour
     {
         if (clicked)
         {
-            Debug.Log("Áßº¹ ¹æÁö");
+            Debug.Log("ì¤‘ë³µ ë°©ì§€");
             return;
         }
 
@@ -44,7 +44,7 @@ public class PanelInteract : MonoBehaviour
             tcount.TapDown(1);
         }
         
-        //»ö±ò ºĞ·ù : ¼­·Î°°Àº »ö ¸®½ºÆ® »ı¼º
+        //ìƒ‰ê¹” ë¶„ë¥˜ : ì„œë¡œê°™ì€ ìƒ‰ ë¦¬ìŠ¤íŠ¸ ìƒì„±
         SpriteRenderer prefabSprite = clickedPanel.GetComponent<SpriteRenderer>();
         List<GameObject> colorList = new List<GameObject>();
         for (int i = 0; i < createPanel.panels.Count; i++)
@@ -54,8 +54,8 @@ public class PanelInteract : MonoBehaviour
                 colorList.Add(createPanel.panels[i]);
             }
         }
-        //ÇÊÅÍ
-        filter = insertList(clickedPanel, colorList, new List<GameObject>()); //Å¬¸¯ÇÑ ÆĞ³Î°ú °¡±î¿î °°Àº »öÆĞ³Î ¸®½ºÆ® ¹İÈ¯
+        //í•„í„°
+        filter = insertList(clickedPanel, colorList, new List<GameObject>()); //í´ë¦­í•œ íŒ¨ë„ê³¼ ê°€ê¹Œìš´ ê°™ì€ ìƒ‰íŒ¨ë„ ë¦¬ìŠ¤íŠ¸ ë°˜í™˜
         filterSort();
         filterRemove();
         createPanel.PanelTime(true);
@@ -63,20 +63,20 @@ public class PanelInteract : MonoBehaviour
 
     private void filterSort()
     {
-        //ºÎ¼ø °³¼ö
+        //ë¶€ìˆœ ê°œìˆ˜
         system.totalBreak += filter.Count;
-        //ÇÑ ÅÏ¿¡ ºÎ¼ø °³¼ö °è»ê
+        //í•œ í„´ì— ë¶€ìˆœ ê°œìˆ˜ ê³„ì‚°
         //Debug.Log(system.Totalbreak);
 
-        GameObject deletedPanel = filter[0]; //Ã³À½ Å¬¸¯ÇÑ°Å
+        GameObject deletedPanel = filter[0]; //ì²˜ìŒ í´ë¦­í•œê±°
         filter.RemoveAt(0);
-        next.Add(new List<GameObject> { deletedPanel }); //Ã³À½ Å¬¸¯ÇÑ°Å ÀÌÁß¸®½ºÆ® »ğÀÔ
-        while (filter.Count > 0) //ÇÊÅÍ°¡ ºô¶§±îÁö µ¹¸°´Ù.
+        next.Add(new List<GameObject> { deletedPanel }); //ì²˜ìŒ í´ë¦­í•œê±° ì´ì¤‘ë¦¬ìŠ¤íŠ¸ ì‚½ì…
+        while (filter.Count > 0) //í•„í„°ê°€ ë¹Œë•Œê¹Œì§€ ëŒë¦°ë‹¤.
         {
-            List<GameObject> addList = new List<GameObject>(); //ÀÌÁß¸®½ºÆ®¿¡ Ãß°¡ÇÒ ¸®½ºÆ®
-            foreach (GameObject obj in next[next.Count - 1]) //ÀÌÁß¸®½ºÆ® °¡Àå ¸¶Áö¸·¿¡ ÀÖ´Â °Í
+            List<GameObject> addList = new List<GameObject>(); //ì´ì¤‘ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€í•  ë¦¬ìŠ¤íŠ¸
+            foreach (GameObject obj in next[next.Count - 1]) //ì´ì¤‘ë¦¬ìŠ¤íŠ¸ ê°€ì¥ ë§ˆì§€ë§‰ì— ìˆëŠ” ê²ƒ
             {
-                foreach(GameObject near in nearby(obj)) //ÇÊÅÍ¿¡ ÀÖ´Â °ÍÁß 6.3 °Å¸®³» ¿ÀºêÁ§Æ®
+                foreach(GameObject near in nearby(obj)) //í•„í„°ì— ìˆëŠ” ê²ƒì¤‘ 6.3 ê±°ë¦¬ë‚´ ì˜¤ë¸Œì íŠ¸
                 {
                     ConnectLine(obj, near);
                     addList.Add(near);
@@ -128,7 +128,7 @@ public class PanelInteract : MonoBehaviour
         ParticleSystem.MainModule main = explosedPanel.main;
         if (sprite.sprite == createPanel.fireSprite)
         {
-            main.startColor = new ParticleSystem.MinMaxGradient(Color.white, Color.red);//ÀÎÀÚ°ª = 2¹øÂ°»ö, 1¹øÂ°»ö
+            main.startColor = new ParticleSystem.MinMaxGradient(Color.white, Color.red);//ì¸ìê°’ = 2ë²ˆì§¸ìƒ‰, 1ë²ˆì§¸ìƒ‰
         }
         else if (sprite.sprite == createPanel.waterSprite)
         {

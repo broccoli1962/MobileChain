@@ -1,11 +1,11 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CharacterRotate : MonoBehaviour
 {
-    //slotÀÇ È¸Àü ±â´É ±¸Çö
+    //slotì˜ íšŒì „ ê¸°ëŠ¥ êµ¬í˜„
     public HorizontalLayoutGroup layout;
     public CharacterSlot[] CharacterSlots;
     private int Characterindex = 0;

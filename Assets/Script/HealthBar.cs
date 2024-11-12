@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -17,7 +17,7 @@ public class HealthBar : MonoBehaviour
 
         fill.color = gradient.Evaluate(1f);
     }
-    public IEnumerator SetHealth(int Health) //ÇöÀçÃ¼·Â
+    public IEnumerator SetHealth(int Health) //í˜„ìž¬ì²´ë ¥
     {
         while (slider.value > Health) {
             if(slider.value <= 0)
