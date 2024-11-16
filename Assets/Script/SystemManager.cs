@@ -106,6 +106,7 @@ public class SystemManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         //플레이어 턴
+
         MonsterManager monsterManager = GameObject.Find("MonsterManager").GetComponent<MonsterManager>();
         Monster selectMonster = monsterManager.GetMonster();
 
@@ -114,6 +115,7 @@ public class SystemManager : MonoBehaviour
             yield return StartCoroutine(selectMonster.TakeDamage(totalBreak));
         }
         //몬스터 턴
+        yield return new WaitForSeconds(2f);
         StartCoroutine(MonsterAttack());
         //턴 이동
         tcount.EnableTapCount();
@@ -133,7 +135,13 @@ public class SystemManager : MonoBehaviour
 
     IEnumerator MonsterAttack()
     {
-        yield return new WaitForSeconds(2f);
+        MonsterManager monsterManager = GameObject.Find("MonsterManager").GetComponent<MonsterManager>();
+        //모든 몬스터 리스트
+        for (int i = 0; i<monsterManager.Monsters.Count; i++)
+        {
+            yield return StartCoroutine(monsterManager.Monsters[i].MonsterTurn());
+        }
+        //yield return StartCoroutine(selectMonster.GiveDamage());
     }
 
     public void Test() 

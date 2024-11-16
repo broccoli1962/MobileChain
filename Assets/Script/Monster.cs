@@ -4,14 +4,18 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using TMPro;
+using Random = UnityEngine.Random;
 
 public class Monster : MonoBehaviour
 {
     public HealthBar HealthBar;
     private CharacterRotate character;
     public ParticleSystem AttackParticle;
+    public TextMeshProUGUI monsterTurnCount;
     public int NowHp;
     public int MaxHealth;
+    public int count;
     [SerializeField] private int MonsterNumber;
     [SerializeField] private RawImage image;
     [SerializeField] private UnityEngine.UI.Image targeting;
@@ -21,11 +25,16 @@ public class Monster : MonoBehaviour
     {
         SystemManager system = SystemManager.Instance;
         character = FindAnyObjectByType<CharacterRotate>();
+        //몬스터 종류 파악
         MonsterStats = system.GetMonsterStat(MonsterNumber);
         SetMonster(MonsterNumber);
+        //채력 설정
         MaxHealth = MonsterStats.Health;
         NowHp = MaxHealth;
         HealthBar.SetMaxHealth(MaxHealth);
+        //몬스터 턴 설정
+        monsterTurnCount.text = MonsterStats.Count.ToString();
+        count = GetCount();
 
         if(targeting != null)
         {
@@ -112,6 +121,62 @@ public class Monster : MonoBehaviour
         }
     }
 
+    public IEnumerator MonsterTurn()
+    {
+        count--;
+        if(count == 0)
+        {
+            monsterTurnCount.text = count.ToString();
+            int damage = this.GetDamage();
+            yield return StartCoroutine(GiveDamage(damage));
+        }
+        monsterTurnCount.text = count.ToString();
+        yield return null;
+    }
+
+    public IEnumerator GiveDamage(int damage)
+    {
+        //공격하는 기능
+        SystemManager manager = FindAnyObjectByType<SystemManager>();
+        int rand = Random.Range(0, 4);
+        CharacterSlot slot1 = character.GetFirstSlot();
+        CharacterSlot slot2 = character.GetSecondSlot();
+        CharacterSlot slot3 = character.GetThirdSlot();
+        CharacterSlot slot4 = character.GetFourSlot();
+
+        switch (rand)
+        {
+            case 0:
+                damage -= slot1.GetArmor();
+                Debug.Log("캐릭터 1공격");
+                break;
+            case 1:
+                damage -= slot2.GetArmor();
+                Debug.Log("캐릭터 2공격");
+                break;
+            case 2:
+                damage -= slot3.GetArmor();
+                Debug.Log("캐릭터 3공격");
+                break;
+            case 3:
+                damage -= slot4.GetArmor();
+                Debug.Log("캐릭터 4공격");
+                break;
+        }
+
+        //방어력이 공격력보다 높은 경우
+        if (damage <= 0)
+        {
+            damage = 0;
+        }
+
+        manager.currentHealth -= damage; 
+        Debug.Log(this.name + "공격완료 현재체력 = " + manager.currentHealth);
+        count = GetCount();
+        yield return StartCoroutine(manager.healthBar.SetHealth(manager.currentHealth));
+    }
+
     public int GetHealth() => MonsterStats.Health;
     public int GetDamage() => MonsterStats.Damage;
+    public int GetCount() => MonsterStats.Count;
 }

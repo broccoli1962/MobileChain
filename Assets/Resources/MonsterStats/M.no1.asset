@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21ce008c4e4fd004799b472ccdd6f277, type: 3}
   m_Name: M.no1
   m_EditorClassIdentifier: 
-  Number: 0
-  Health: 2000
-  Damage: 100
+  Number: 1
+  Health: 3000
+  Damage: 200
+  Count: 4
   image: {fileID: 10912, guid: 0000000000000000f000000000000000, type: 0}

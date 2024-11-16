@@ -10,5 +10,6 @@ public class MonsterStat : ScriptableObject
     public int Number;
     public int Health;
     public int Damage;
+    public int Count;
     public Texture image;
 }
