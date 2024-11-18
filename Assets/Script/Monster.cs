@@ -148,19 +148,15 @@ public class Monster : MonoBehaviour
         {
             case 0:
                 damage -= slot1.GetArmor();
-                Debug.Log("캐릭터 1공격");
                 break;
             case 1:
                 damage -= slot2.GetArmor();
-                Debug.Log("캐릭터 2공격");
                 break;
             case 2:
                 damage -= slot3.GetArmor();
-                Debug.Log("캐릭터 3공격");
                 break;
             case 3:
                 damage -= slot4.GetArmor();
-                Debug.Log("캐릭터 4공격");
                 break;
         }
 

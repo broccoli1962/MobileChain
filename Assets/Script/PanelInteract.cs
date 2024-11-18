@@ -2,16 +2,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.PlasticSCM.Editor.WebApi;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 public class PanelInteract : MonoBehaviour
 {
-    List<GameObject> filter = new List<GameObject>();
-    List<GameObject> copyList = new List<GameObject>(); //패널 후처리 제거용
-    List<List<GameObject>> next = new List<List<GameObject>>();
+    List<GameObject> filter = new();
+    List<GameObject> copyList = new(); //패널 후처리 제거용
+    List<List<GameObject>> next = new();
     [SerializeField] private ParticleSystem explosedPanel;
+    GameObject lastObjPanel;
+    public int currentCount = 0;
     CreatePanel createPanel;
+    CharacterRotate characterRotate;
     AudioManager audioManage;
     TapCount tcount;
     SystemManager system;
@@ -20,8 +26,9 @@ public class PanelInteract : MonoBehaviour
 
     private void Start()
     {
-        distance = 12f; //* (Screen.width / 720f);
+        distance = 10f; //* (Screen.width / 720f);
         system = SystemManager.Instance;
+        characterRotate = FindAnyObjectByType<CharacterRotate>();
         GameObject obj = GameObject.Find("PanelManager");
         createPanel = obj.GetComponent<CreatePanel>();
         GameObject obj2 = GameObject.Find("AudioManager");
@@ -43,19 +50,20 @@ public class PanelInteract : MonoBehaviour
         {
             tcount.TapDown(1);
         }
-        
+
         //색깔 분류 : 서로같은 색 리스트 생성
-        SpriteRenderer prefabSprite = clickedPanel.GetComponent<SpriteRenderer>();
-        List<GameObject> colorList = new List<GameObject>();
-        for (int i = 0; i < createPanel.panels.Count; i++)
+        List<GameObject> colorList = new();
+        foreach(var panel in createPanel.panels)
         {
-            if (createPanel.panels[i].GetComponent<SpriteRenderer>().sprite == prefabSprite.sprite)
+            string kvalue = panel.Value;
+            if(createPanel.panels.TryGetValue(clickedPanel, out string value) && kvalue == value)
             {
-                colorList.Add(createPanel.panels[i]);
+                colorList.Add(panel.Key);
             }
         }
         //필터
         filter = insertList(clickedPanel, colorList, new List<GameObject>()); //클릭한 패널과 가까운 같은 색패널 리스트 반환
+        currentCount = filter.Count;
         filterSort();
         filterRemove();
         createPanel.PanelTime(true);
@@ -63,16 +71,21 @@ public class PanelInteract : MonoBehaviour
 
     private void filterSort()
     {
-        //부순 개수
+        //총 부순 개수 계산
         system.totalBreak += filter.Count;
         //한 턴에 부순 개수 계산
-        //Debug.Log(system.Totalbreak);
+        Debug.Log(filter.Count);
 
         GameObject deletedPanel = filter[0]; //처음 클릭한거
         filter.RemoveAt(0);
         next.Add(new List<GameObject> { deletedPanel }); //처음 클릭한거 이중리스트 삽입
         while (filter.Count > 0) //필터가 빌때까지 돌린다.
         {
+            if (filter.Count <= 2) //가장 마지막에 부서진 패널 위치 정보 가져오기
+            {
+                GameObject lastObj = filter[0];
+                lastObjPanel = lastObj;
+            }
             List<GameObject> addList = new List<GameObject>(); //이중리스트에 추가할 리스트
             foreach (GameObject obj in next[next.Count - 1]) //이중리스트 가장 마지막에 있는 것
             {
@@ -103,7 +116,8 @@ public class PanelInteract : MonoBehaviour
                     color.a = 0.5f;
                     spriteColor.color = color;
                 }
-                    
+                
+                //파티클 재생
                 Vector3 centerPosition = obj.GetComponent<SpriteRenderer>().bounds.center;
                 ParticleColor(spriteColor);
                 ParticleSystem particleInstance = Instantiate(explosedPanel, centerPosition, Quaternion.identity);
@@ -118,6 +132,7 @@ public class PanelInteract : MonoBehaviour
         {
             deletePanel();
             deleteLine();
+            createPlayerPanel();
             createPanel.PanelTime(false);
             clicked = false;
         }
@@ -145,6 +160,48 @@ public class PanelInteract : MonoBehaviour
         else if (sprite.sprite == createPanel.heartSprite)
         {
             main.startColor = new ParticleSystem.MinMaxGradient(Color.white, Color.magenta);
+        }
+    }
+
+    private void createPlayerPanel()
+    {
+        CharacterSlot charac = characterRotate.GetFirstSlot();
+        if (currentCount > 11)
+        {
+            GameObject item = Instantiate(createPanel.large_emptyPrefab, lastObjPanel.transform.localPosition, Quaternion.identity);
+            item.transform.rotation = lastObjPanel.transform.rotation;
+            item.transform.SetParent(GameObject.Find("Panels").transform, false);
+            createPanel.panels.Add(item, charac.GetElement().ToString());
+        }
+        else if (currentCount > 5)
+        {
+            createElements(charac.GetElement().ToString());
+            GameObject item = Instantiate(createPanel.emptyPrefab, lastObjPanel.transform.localPosition, Quaternion.identity);
+            item.transform.rotation = lastObjPanel.transform.rotation;
+            RawImage image = item.GetComponentInChildren<RawImage>();
+            image.texture = charac.GetImage();
+            item.transform.SetParent(GameObject.Find("Panels").transform, false);
+            createPanel.panels.Add(item , charac.GetElement().ToString());
+            Debug.Log("발동");
+        }
+    }
+
+    private void createElements(string type)
+    {
+        SpriteRenderer sprite = createPanel.emptyPrefab.GetComponent<SpriteRenderer>();
+        switch (type) {
+            case "fire":
+                sprite.sprite = createPanel.fireSprite_empty;
+                break;
+            case "water":
+                sprite.sprite = createPanel.waterSprite_empty;
+                break;
+            case "light":
+                sprite.sprite = createPanel.lightSprite_empty;
+                break;
+            case "grass":
+                sprite.sprite = createPanel.grassSprite_empty;
+                break;
         }
     }
 
@@ -181,11 +238,17 @@ public class PanelInteract : MonoBehaviour
     {
         SpriteRenderer render1 = obj.GetComponent<SpriteRenderer>();
         SpriteRenderer render2 = obj2.GetComponent<SpriteRenderer>();
+        
+        CircleCollider2D co1 = obj.GetComponent<CircleCollider2D>();
+        CircleCollider2D co2 = obj2.GetComponent<CircleCollider2D>();
+
+        float a = co1.radius / 0.525f; //1
+        float b = co2.radius / 0.525f; //2
 
         Vector3 center1 = render1.bounds.center;
         Vector3 center2 = render2.bounds.center;
 
-        return Vector3.Distance(center1, center2) < distance;
+        return Vector3.Distance(center1, center2) < distance * ((a+b)/2f);
     }
 
     private List<GameObject> insertList(GameObject g, List<GameObject> gList, List<GameObject> finalList)

@@ -17,6 +17,7 @@ MonoBehaviour:
   Damage: 200
   Heal: 200
   Armor: 200
-  image: {fileID: 10912, guid: 0000000000000000f000000000000000, type: 0}
+  image: {fileID: -8328923581568760697, guid: 5e046200a2babb64ba9b3f866c02f85c, type: 3}
+  type: 1
   ability1: 0
   ability2: 0

@@ -12,6 +12,8 @@ public class CreatePanel : MonoBehaviour
     [Header ("PanelPrefab, LinePrefab")]
     public GameObject panelPrefab;
     public GameObject linePrefab;
+    public GameObject emptyPrefab;
+    public GameObject large_emptyPrefab;
     SpriteRenderer panelImg;
     [Header ("4Panel")]
     public Sprite fireSprite;
@@ -19,17 +21,24 @@ public class CreatePanel : MonoBehaviour
     public Sprite grassSprite;
     public Sprite lightSprite;
     public Sprite heartSprite;
+    [Header ("4Panel_Empty")]
+    public Sprite fireSprite_empty;
+    public Sprite waterSprite_empty;
+    public Sprite grassSprite_empty;
+    public Sprite lightSprite_empty;
     [Header ("MaxPanel")]
     public int maxPanelCount = 40;
     //Boolean runPanelCreate = true;
 
-    public List<GameObject> panels;
     private List<AccData> accList = new List<AccData>();
     public IEnumerator create;
     Boolean createRun = true;
 
     Vector3 leftSpawn;
     Vector3 rightSpawn;
+
+    private String panelType = "";
+    public Dictionary<GameObject, string> panels = new();
 
     private void Start()
     {
@@ -61,7 +70,7 @@ public class CreatePanel : MonoBehaviour
 
     public void PanelTime(bool enable)
     {
-        foreach(GameObject panel in panels)
+        foreach(GameObject panel in panels.Keys)
         {
             Rigidbody2D rb = panel.GetComponent<Rigidbody2D>();
             if (enable)
@@ -113,23 +122,28 @@ public class CreatePanel : MonoBehaviour
         switch(rand){
             case 0:
                 panelImg.sprite = fireSprite;
+                panelType = "fire";
                 break;
             case 1:
                 panelImg.sprite = waterSprite;
+                panelType = "water";
                 break;
             case 2:
                 panelImg.sprite = grassSprite;
+                panelType = "grass";
                 break;
             case 3:
                 panelImg.sprite = lightSprite;
+                panelType = "light";
                 break;
             case 4:
                 panelImg.sprite = heartSprite;
+                panelType = "heart";
                 break;
         }
 
         GameObject item = Instantiate(panelPrefab, Random.value > 0.5 ? leftSpawn:rightSpawn, Quaternion.identity);
         item.transform.SetParent(GameObject.Find("Panels").transform, false);
-        panels.Add(item);
+        panels.Add(item, panelType);
     }
 }

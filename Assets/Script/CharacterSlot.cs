@@ -36,6 +36,8 @@ public class CharacterSlot : MonoBehaviour
     public int GetDamage() => characterStat.Damage;
     public int GetHealPower() => characterStat.Heal;
     public int GetArmor() => characterStat.Armor;
+    public Texture GetImage() => characterStat.image;
+    public CharacterStat.Element GetElement() => characterStat.type;
     public CharacterStat.Ability1 GetAbility1() => characterStat.ability1;
     public CharacterStat.Ability2 GetAbility2() => characterStat.ability2;
 }

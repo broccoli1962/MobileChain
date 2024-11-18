@@ -15,6 +15,13 @@ public class CharacterStat : ScriptableObject
     public Texture image;
 
     [System.Serializable]
+    public enum Element
+    {
+        fire, water, light, grass
+    }
+    public Element type;
+
+    [System.Serializable]
     public enum Ability1
     {
         None, CanProtectBreak, PowerUp
