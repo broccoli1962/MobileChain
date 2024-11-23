@@ -12,4 +12,11 @@ public class MonsterStat : ScriptableObject
     public int Damage;
     public int Count;
     public Texture image;
+
+    [System.Serializable]
+    public enum Element
+    {
+        fire, water, light, grass
+    }
+    public Element type;
 }

@@ -8,13 +8,13 @@ public class TapCount : MonoBehaviour
     //탭을 다하였을 경우 다음 턴으로 넘어가기 (턴을 관리하는 스크립트 필요)
     [SerializeField]
     public GameObject[] tap;
-    SystemManager system;
+    PlayerSystem playerSystem;
     public int tapCount = 0;
     
     private void Start()
     {
         tapCount = tap.Length;
-        system = GameObject.Find("GameSystemManager").GetComponent<SystemManager>();
+        playerSystem = FindAnyObjectByType<PlayerSystem>();
     }
 
     public void TapDown(int t)
@@ -29,7 +29,7 @@ public class TapCount : MonoBehaviour
             }
             if (tapCount <= 0)
             {
-                StartCoroutine(system.AttackLogic());
+                StartCoroutine(playerSystem.AttackLogic());
             }
         }
     }

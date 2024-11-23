@@ -261,7 +261,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 40}
+  m_SizeDelta: {x: 295, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2858483915041424793
 CanvasRenderer:
@@ -367,7 +367,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 5314317195528840472, guid: edea92e03f5d9a74c94e048079b4798c, type: 3}
-  m_Type: 0
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -470,6 +470,7 @@ MonoBehaviour:
   monsterTurnCount: {fileID: 8936246482082339884}
   NowHp: 0
   MaxHealth: 0
+  count: 0
   MonsterNumber: 0
   image: {fileID: 5841552363156572468}
   targeting: {fileID: 7623547405755715900}
@@ -557,7 +558,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 120, y: -300}
-  m_SizeDelta: {x: 300, y: 35}
+  m_SizeDelta: {x: 295, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &9100930785635214758
 MonoBehaviour:

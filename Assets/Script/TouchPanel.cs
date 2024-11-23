@@ -9,13 +9,13 @@ public class TouchPanel : MonoBehaviour
     PanelInteract pi;
     Vector3 MousePosition;
     Camera Camera;
-    SystemManager system;
+    PlayerSystem playerSystem;
 
     private void Start()
     {
-        Camera = GameObject.Find("Main Camera").GetComponent<Camera>();
-        pi = GameObject.Find("PanelManager").GetComponent<PanelInteract>();
-        system = GameObject.Find("GameSystemManager").GetComponent<SystemManager>();
+        Camera = FindAnyObjectByType<Camera>();
+        pi = FindAnyObjectByType<PanelInteract>();
+        playerSystem = FindAnyObjectByType<PlayerSystem>();
     }
 
     private void Update()
@@ -31,7 +31,7 @@ public class TouchPanel : MonoBehaviour
             foreach (RaycastHit2D ray in rayhit2)
             {
                 //monster click
-                if (ray.transform.CompareTag("Monster") && !system.turn)
+                if (ray.transform.CompareTag("Monster") && !playerSystem.turn)
                 {
                     Monster monster = ray.transform.GetComponent<Monster>();
                     if (monster != null)
@@ -52,7 +52,7 @@ public class TouchPanel : MonoBehaviour
             foreach (RaycastHit2D ray in rayhit)
             {
                 //panel click
-                if (ray.transform.CompareTag("Panel") && !system.turn)
+                if (ray.transform.CompareTag("Panel") && !playerSystem.turn)
                 {
                     GameObject hitObj = ray.transform.gameObject;
                     pi.click(hitObj);

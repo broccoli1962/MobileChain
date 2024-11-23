@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.PlasticSCM.Editor.WebApi;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class PanelInteract : MonoBehaviour
 {
@@ -21,6 +16,7 @@ public class PanelInteract : MonoBehaviour
     AudioManager audioManage;
     TapCount tcount;
     SystemManager system;
+    PlayerSystem playerSystem;
     public static float distance;
     bool clicked;
 
@@ -28,6 +24,7 @@ public class PanelInteract : MonoBehaviour
     {
         distance = 10f; //* (Screen.width / 720f);
         system = SystemManager.Instance;
+        playerSystem = FindAnyObjectByType<PlayerSystem>();
         characterRotate = FindAnyObjectByType<CharacterRotate>();
         GameObject obj = GameObject.Find("PanelManager");
         createPanel = obj.GetComponent<CreatePanel>();
@@ -46,7 +43,7 @@ public class PanelInteract : MonoBehaviour
 
         clicked = true;
 
-        if (!system.turn)
+        if (!playerSystem.turn)
         {
             tcount.TapDown(1);
         }
@@ -64,15 +61,23 @@ public class PanelInteract : MonoBehaviour
         //필터
         filter = insertList(clickedPanel, colorList, new List<GameObject>()); //클릭한 패널과 가까운 같은 색패널 리스트 반환
         currentCount = filter.Count;
-        filterSort();
+        filterSort(createPanel.panels[clickedPanel]);
         filterRemove();
         createPanel.PanelTime(true);
     }
 
-    private void filterSort()
+    private void filterSort(string value)
     {
-        //총 부순 개수 계산
-        system.totalBreak += filter.Count;
+        //총 부순 개수 개수
+        if (value != "heart")
+        {
+            playerSystem.totalBreak += filter.Count;
+        }
+        else
+        {
+            playerSystem.totalheal += filter.Count;
+        }
+        
         //한 턴에 부순 개수 계산
         Debug.Log(filter.Count);
 
@@ -89,7 +94,7 @@ public class PanelInteract : MonoBehaviour
             List<GameObject> addList = new List<GameObject>(); //이중리스트에 추가할 리스트
             foreach (GameObject obj in next[next.Count - 1]) //이중리스트 가장 마지막에 있는 것
             {
-                foreach(GameObject near in nearby(obj)) //필터에 있는 것중 6.3 거리내 오브젝트
+                foreach(GameObject near in nearby(obj)) //필터에 있는 것중 거리내 오브젝트
                 {
                     ConnectLine(obj, near);
                     addList.Add(near);

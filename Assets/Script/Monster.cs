@@ -16,7 +16,7 @@ public class Monster : MonoBehaviour
     public int NowHp;
     public int MaxHealth;
     public int count;
-    [SerializeField] private int MonsterNumber;
+    [SerializeField] public int MonsterNumber;
     [SerializeField] private RawImage image;
     [SerializeField] private UnityEngine.UI.Image targeting;
 
@@ -124,7 +124,7 @@ public class Monster : MonoBehaviour
     public IEnumerator MonsterTurn()
     {
         count--;
-        if(count == 0)
+        if(count == 0 && this != null)
         {
             monsterTurnCount.text = count.ToString();
             int damage = this.GetDamage();
@@ -134,10 +134,10 @@ public class Monster : MonoBehaviour
         yield return null;
     }
 
-    public IEnumerator GiveDamage(int damage)
+    public IEnumerator GiveDamage(int damage) //전체 공격, 단일 대상 공격, 특정 속성 공격 제작예정, 공격 방식은 json string으로 받는다.
     {
         //공격하는 기능
-        SystemManager manager = FindAnyObjectByType<SystemManager>();
+        PlayerSystem manager = FindAnyObjectByType<PlayerSystem>();
         int rand = Random.Range(0, 4);
         CharacterSlot slot1 = character.GetFirstSlot();
         CharacterSlot slot2 = character.GetSecondSlot();
@@ -175,4 +175,5 @@ public class Monster : MonoBehaviour
     public int GetHealth() => MonsterStats.Health;
     public int GetDamage() => MonsterStats.Damage;
     public int GetCount() => MonsterStats.Count;
+    public MonsterStat.Element GetElement() => MonsterStats.type;
 }

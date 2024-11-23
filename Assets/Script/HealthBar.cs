@@ -31,4 +31,21 @@ public class HealthBar : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
     }
+
+    public IEnumerator IncreaseHealth(int Health)
+    {
+        while (slider.value < Health)
+        {
+            if (slider.value >= 0)
+            {
+                yield break;
+            }
+
+            var value = Mathf.Max(slider.value + slider.maxValue / 40, Health);
+            slider.value = value;
+            fill.color = gradient.Evaluate(slider.normalizedValue);
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
 }
