@@ -83,7 +83,6 @@ GameObject:
   - component: {fileID: 3293745203262259742}
   - component: {fileID: 1739542387199112309}
   - component: {fileID: 3231132547864503960}
-  - component: {fileID: 7021935940250022543}
   - component: {fileID: 4370750156509473143}
   m_Layer: 5
   m_Name: Cpanel
@@ -156,7 +155,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -7394497634178059482, guid: 32c99dbd4eaa7dd43b2e6c9d670f7eff, type: 3}
+  m_Sprite: {fileID: -5310804822567817798, guid: 7af4a81ea3d5c3847aaf8a6b31259ae9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -194,43 +193,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!70 &7021935940250022543
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5493324697459620647}
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.49999997}
-  m_Size: {x: 1.05, y: 1.05}
-  m_Direction: 0
 --- !u!58 &4370750156509473143
 CircleCollider2D:
   m_ObjectHideFlags: 0

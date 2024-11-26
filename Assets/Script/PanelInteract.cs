@@ -1,22 +1,32 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
+using static UnityEditor.Progress;
 
 public class PanelInteract : MonoBehaviour
 {
     List<GameObject> filter = new();
     List<GameObject> copyList = new(); //패널 후처리 제거용
     List<List<GameObject>> next = new();
+    List<RectTransform> clPanelTransform = new();
+
     [SerializeField] private ParticleSystem explosedPanel;
-    GameObject lastObjPanel;
+    
+    Transform lastObjPanel;
     public int currentCount = 0;
+    
     CreatePanel createPanel;
     CharacterRotate characterRotate;
     AudioManager audioManage;
     TapCount tcount;
     SystemManager system;
     PlayerSystem playerSystem;
+
+    public float boomRadius = 15f;
     public static float distance;
     bool clicked;
 
@@ -89,7 +99,7 @@ public class PanelInteract : MonoBehaviour
             if (filter.Count <= 2) //가장 마지막에 부서진 패널 위치 정보 가져오기
             {
                 GameObject lastObj = filter[0];
-                lastObjPanel = lastObj;
+                lastObjPanel = lastObj.transform;
             }
             List<GameObject> addList = new List<GameObject>(); //이중리스트에 추가할 리스트
             foreach (GameObject obj in next[next.Count - 1]) //이중리스트 가장 마지막에 있는 것
@@ -137,12 +147,23 @@ public class PanelInteract : MonoBehaviour
         {
             deletePanel();
             deleteLine();
-            createPlayerPanel();
+            createPlayerPanel();//6 12 panel 생성
             createPanel.PanelTime(false);
-            clicked = false;
+            if (clPanelTransform.Count > 0)
+            {
+                StartCoroutine(boomExplode());
+                return;
+            }
+            AfterRun();
         }
     }
     
+    private void AfterRun()
+    {
+        clicked = false;
+        createPanel.StartCoroutine(createPanel.create);
+    }
+
     void ParticleColor(SpriteRenderer sprite)
     {
         ParticleSystem.MainModule main = explosedPanel.main;
@@ -167,27 +188,105 @@ public class PanelInteract : MonoBehaviour
             main.startColor = new ParticleSystem.MinMaxGradient(Color.white, Color.magenta);
         }
     }
+    
+    private GameObject CreateBoom(Transform t)
+    {
+        GameObject boom = Instantiate(createPanel.Test_boom, t.localPosition, Quaternion.identity);
+        boom.transform.rotation = t.rotation;
+        boom.transform.SetParent(GameObject.Find("Panels").transform, false);
+        return boom;
+    }
+
+    private IEnumerator boomExplode()
+    {
+        List<GameObject> booms = new();
+        foreach(RectTransform t in clPanelTransform)
+        {
+            booms.Add(CreateBoom(t));
+        }
+        while (booms.Count > 0)
+        {
+            yield return new WaitForSeconds(1.5f);
+
+            GameObject obj = booms[0];
+            booms.RemoveAt(0);
+
+            SpriteRenderer center = obj.GetComponent<SpriteRenderer>();
+
+            Collider2D[] Colliders = Physics2D.OverlapCircleAll(center.bounds.center, boomRadius);
+
+            Debug.Log(Colliders.Length + "개 범위 파악 완료");
+
+            foreach (Collider2D searchCollider in Colliders)
+            {
+                if (searchCollider.gameObject.CompareTag("Panel"))
+                {
+                    if (createPanel.panels[searchCollider.gameObject] == "heart")
+                    {
+                        playerSystem.totalheal++;
+                    }
+                    else
+                    {
+                        playerSystem.totalBreak++;
+                    }
+                    createPanel.panels.Remove(searchCollider.gameObject);
+                    Destroy(searchCollider.gameObject);
+                }else if (searchCollider.gameObject.CompareTag("CLPanel"))
+                {
+                    createPanel.panels.Remove(searchCollider.gameObject);
+                    Destroy(searchCollider.gameObject);
+                    playerSystem.totalBreak++;
+                    booms.Add(CreateBoom(searchCollider.gameObject.transform)); //새롭게 터칠 목록에 추가
+                }
+            }
+            Destroy(obj);
+        }
+        clPanelTransform.Clear();
+        AfterRun();
+    }
 
     private void createPlayerPanel()
     {
         CharacterSlot charac = characterRotate.GetFirstSlot();
-        if (currentCount > 11)
+        if (currentCount > 6)
         {
-            GameObject item = Instantiate(createPanel.large_emptyPrefab, lastObjPanel.transform.localPosition, Quaternion.identity);
-            item.transform.rotation = lastObjPanel.transform.rotation;
+            LargeCreateElements(charac.GetElement().ToString());
+            GameObject item = Instantiate(createPanel.large_emptyPrefab, lastObjPanel.localPosition, Quaternion.identity);
+            item.transform.rotation = lastObjPanel.rotation;
+            RawImage image = item.GetComponentInChildren<RawImage>();
+            image.texture = charac.GetImage();
             item.transform.SetParent(GameObject.Find("Panels").transform, false);
             createPanel.panels.Add(item, charac.GetElement().ToString());
         }
         else if (currentCount > 5)
         {
             createElements(charac.GetElement().ToString());
-            GameObject item = Instantiate(createPanel.emptyPrefab, lastObjPanel.transform.localPosition, Quaternion.identity);
-            item.transform.rotation = lastObjPanel.transform.rotation;
+            GameObject item = Instantiate(createPanel.emptyPrefab, lastObjPanel.localPosition, Quaternion.identity);
+            item.transform.rotation = lastObjPanel.rotation;
             RawImage image = item.GetComponentInChildren<RawImage>();
             image.texture = charac.GetImage();
             item.transform.SetParent(GameObject.Find("Panels").transform, false);
             createPanel.panels.Add(item , charac.GetElement().ToString());
-            Debug.Log("발동");
+        }
+    }
+
+    private void LargeCreateElements(string type)
+    {
+        SpriteRenderer sprite = createPanel.large_emptyPrefab.GetComponent<SpriteRenderer>();
+        switch (type)
+        {
+            case "fire":
+                sprite.sprite = createPanel.Large_fireSprite_empty;
+                break;
+            case "water":
+                sprite.sprite = createPanel.Large_waterSprite_empty;
+                break;
+            case "light":
+                sprite.sprite = createPanel.Large_lightSprite_empty;
+                break;
+            case "grass":
+                sprite.sprite = createPanel.Large_grassSprite_empty;
+                break;
         }
     }
 
@@ -215,9 +314,13 @@ public class PanelInteract : MonoBehaviour
         foreach (GameObject obj in copyList)
         {
             createPanel.panels.Remove(obj);
+            if (obj.CompareTag("CLPanel"))
+            {
+                clPanelTransform.Add(obj.transform.GetComponent<RectTransform>());
+            }
             Destroy(obj);
         }
-        createPanel.StartCoroutine(createPanel.create);
+        
         copyList.Clear();
     }
 

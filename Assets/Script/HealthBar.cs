@@ -24,7 +24,6 @@ public class HealthBar : MonoBehaviour
             {
                 yield break;
             }
-
             var value = Mathf.Max(slider.value - slider.maxValue/40, Health);
             slider.value = value;
             fill.color = gradient.Evaluate(slider.normalizedValue);
@@ -36,7 +35,7 @@ public class HealthBar : MonoBehaviour
     {
         while (slider.value < Health)
         {
-            if (slider.value >= 0)
+            if (slider.value <= 0)
             {
                 yield break;
             }

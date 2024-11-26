@@ -52,7 +52,7 @@ public class TouchPanel : MonoBehaviour
             foreach (RaycastHit2D ray in rayhit)
             {
                 //panel click
-                if (ray.transform.CompareTag("Panel") && !playerSystem.turn)
+                if (ray.transform.CompareTag("Panel") && !playerSystem.turn || ray.transform.CompareTag("CLPanel") && !playerSystem.turn)
                 {
                     GameObject hitObj = ray.transform.gameObject;
                     pi.click(hitObj);

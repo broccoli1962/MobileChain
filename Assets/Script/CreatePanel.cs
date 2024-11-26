@@ -15,6 +15,8 @@ public class CreatePanel : MonoBehaviour
     public GameObject emptyPrefab;
     public GameObject large_emptyPrefab;
     SpriteRenderer panelImg;
+    [Header("Boom")]
+    public GameObject Test_boom;
     [Header ("4Panel")]
     public Sprite fireSprite;
     public Sprite waterSprite;
@@ -26,13 +28,17 @@ public class CreatePanel : MonoBehaviour
     public Sprite waterSprite_empty;
     public Sprite grassSprite_empty;
     public Sprite lightSprite_empty;
+    [Header("4Panel_Large_Empty")]
+    public Sprite Large_fireSprite_empty;
+    public Sprite Large_waterSprite_empty;
+    public Sprite Large_grassSprite_empty;
+    public Sprite Large_lightSprite_empty;
     [Header ("MaxPanel")]
     public int maxPanelCount = 40;
     //Boolean runPanelCreate = true;
 
     private List<AccData> accList = new List<AccData>();
     public IEnumerator create;
-    Boolean createRun = true;
 
     Vector3 leftSpawn;
     Vector3 rightSpawn;
@@ -54,7 +60,7 @@ public class CreatePanel : MonoBehaviour
 
     IEnumerator Create()
     {
-        while (createRun)
+        while (true)
         {
             if (panels.Count == maxPanelCount)
             {
@@ -75,7 +81,7 @@ public class CreatePanel : MonoBehaviour
             Rigidbody2D rb = panel.GetComponent<Rigidbody2D>();
             if (enable)
             {
-                accList.Add(new AccData(rb));
+                accList.Add(new AccData(rb, panel));
             }
             rb.bodyType = enable ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
         }
@@ -95,17 +101,20 @@ public class CreatePanel : MonoBehaviour
         float drag, mass, angulerVel;
         Vector2 vel;
         Rigidbody2D rb;
-        public AccData(Rigidbody2D body)
+        GameObject obj;
+        public AccData(Rigidbody2D body, GameObject obj)
         {
             this.rb = body;
             this.drag = body.linearDamping;
             this.mass = body.mass;
             this.vel = body.linearVelocity;
             this.angulerVel = body.angularVelocity;
+            this.obj = obj;
         }
 
         public void accept()
         {
+            if (obj.IsDestroyed()) return;
             rb.bodyType = RigidbodyType2D.Dynamic; //? 왜 써야하는지 모르겠음 경고 나옴
             rb.linearDamping = drag;
             rb.mass = mass;

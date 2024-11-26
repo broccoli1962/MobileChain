@@ -5,9 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
 {
-    public List<ScriptableStage> stageDatas;
+    [SerializeField] private List<ScriptableStage> stageDatas;
+    public List<GameObject> characters = new();
     public int StageNumber;
-    public string monsterManagerSceneName = "MainScene";
     public MonsterManager monsterManager;
     public GameObject monsterPrefab;
 
@@ -24,6 +24,10 @@ public class StageManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void Start()
+    {
     }
 
     public ScriptableStage LoadStage(int stageNumber) //스테이지 정보 가져오기

@@ -9,6 +9,7 @@ TagManager:
   - Panel
   - UI
   - Monster
+  - CLPanel
   layers:
   - Default
   - TransparentFX

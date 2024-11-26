@@ -18,7 +18,10 @@ public class CharacterSlot : MonoBehaviour
         SystemManager system = SystemManager.Instance;
         characterStat = system.GetCharacterStat(CharacterNumber);
         PlayerSystem p = FindAnyObjectByType<PlayerSystem>();
-        p.AddHealth(characterStat.Health);
+        if (p != null)
+        {
+            p.AddHealth(characterStat.Health);
+        }
         SetCharacter(CharacterNumber);
     }
 
