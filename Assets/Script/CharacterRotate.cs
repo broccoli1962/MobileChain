@@ -1,19 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class CharacterRotate : MonoBehaviour
 {
     //slot의 회전 기능 구현
-    public HorizontalLayoutGroup layout;
+    public GridLayoutGroup layout;
     public CharacterSlot[] CharacterSlots;
     [SerializeField] private int Characterindex = 0;
     public float duringTime = 0;
 
     private void Start()
     {
-        layout = GetComponent<HorizontalLayoutGroup>();
+        layout = GetComponent<GridLayoutGroup>();
         CharacterSlots = GetComponentsInChildren<CharacterSlot>();
     }
 

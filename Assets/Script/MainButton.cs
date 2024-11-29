@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class MainButton : MonoBehaviour
 {
     public GameObject alterDialog;
+
     public void ReturnButton()
     {
         alterDialog.SetActive(true);

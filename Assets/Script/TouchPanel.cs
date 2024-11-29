@@ -1,19 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 
 public class TouchPanel : MonoBehaviour
 {
     PanelInteract pi;
-    Vector3 MousePosition;
-    Camera Camera;
     PlayerSystem playerSystem;
 
     private void Start()
     {
-        Camera = FindAnyObjectByType<Camera>();
         pi = FindAnyObjectByType<PanelInteract>();
         playerSystem = FindAnyObjectByType<PlayerSystem>();
     }

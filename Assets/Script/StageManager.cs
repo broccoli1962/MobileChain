@@ -6,10 +6,13 @@ using UnityEngine.SceneManagement;
 public class StageManager : MonoBehaviour
 {
     [SerializeField] private List<ScriptableStage> stageDatas;
-    public List<GameObject> characters = new();
+    public List<int> characters = new();
     public int StageNumber;
     public MonsterManager monsterManager;
+    public CharacterRotate characterRotate;
     public GameObject monsterPrefab;
+    public GameObject characterPrefab;
+    public GameObject slotLine;
 
     public static StageManager instance;
 
@@ -26,8 +29,18 @@ public class StageManager : MonoBehaviour
         }
     }
 
-    public void Start()
+    public void GetSlotLine()
     {
+        Transform[] childTransforms = slotLine.GetComponentsInChildren<Transform>();
+        //첫 시작때 초기화 시켜줌
+        foreach (Transform child in childTransforms)
+        {
+            CharacterSlot charac = child.GetComponent<CharacterSlot>();
+            if (child.CompareTag("character"))
+            {
+                characters.Add(charac.CharacterNumber);
+            }
+        }
     }
 
     public ScriptableStage LoadStage(int stageNumber) //스테이지 정보 가져오기
@@ -70,6 +83,26 @@ public class StageManager : MonoBehaviour
             }
 
             monsterManager.Refresh();
+        }
+    }
+
+    public void SpawnCharacter(int characterNumber)
+    {
+        CharacterStat characterStat = SystemManager.Instance.GetCharacterStat(characterNumber);
+
+        if (characterStat != null)
+        {
+            GameObject characterInstance = Instantiate(characterPrefab);
+
+            CharacterSlot character = characterInstance.GetComponent<CharacterSlot>();
+            character.CharacterNumber = characterNumber;
+            
+
+            characterInstance.transform.SetParent(characterRotate.transform, false);
+        }
+        else
+        {
+            Debug.Log("해당 번호 캐릭터 없음 번호 = " + characterNumber);
         }
     }
 

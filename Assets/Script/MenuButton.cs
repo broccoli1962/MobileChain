@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -22,6 +20,12 @@ public class MenuButton : MonoBehaviour
         stageManager.StageNumber = int.Parse(text.text);
 
         ScriptableStage stageData = stageManager.LoadStage(stageManager.StageNumber);
+
+        if(stageManager.characters.Count < 1)
+        {
+            Debug.Log("캐릭터가 없음");
+            return;
+        }
 
         if (stageData != null)
         {
@@ -51,18 +55,17 @@ public class MenuButton : MonoBehaviour
     public void InsertCharacter()
     {
         GameObject clickObject = EventSystem.current.currentSelectedGameObject;
+        CharacterSlot slot = clickObject.GetComponent<CharacterSlot>();
 
         if (clickObject.transform.IsChildOf(characterSlots))
         {
-            clickObject.transform.SetParent(characterList.transform);
-            stageManager.characters.Remove(clickObject);
-            Debug.Log(characterSlots + "자식임");
+            clickObject.transform.SetParent(characterList.transform, false);
+            stageManager.characters.Remove(slot.CharacterNumber);
         }
-        else
+        else if (stageManager.characters.Count < 4)
         {
-            clickObject.transform.SetParent(characterSlots);
-            stageManager.characters.Add(clickObject);
-            Debug.Log(characterSlots + "자식 아님");
+            clickObject.transform.SetParent(characterSlots, false);
+            stageManager.characters.Add(slot.CharacterNumber);
         }
     }
 }

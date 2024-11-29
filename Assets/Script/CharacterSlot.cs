@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class CharacterSlot : MonoBehaviour
 {
-    [SerializeField] private int CharacterNumber;
+    public int CharacterNumber;
     [SerializeField] private RawImage image;
     [SerializeField] private RawImage slotImage;
 

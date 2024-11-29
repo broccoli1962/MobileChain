@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
-using static UnityEditor.Progress;
 
 public class PanelInteract : MonoBehaviour
 {
@@ -87,9 +84,8 @@ public class PanelInteract : MonoBehaviour
         {
             playerSystem.totalheal += filter.Count;
         }
-        
-        //한 턴에 부순 개수 계산
-        Debug.Log(filter.Count);
+
+        Transform lastObj = null;
 
         GameObject deletedPanel = filter[0]; //처음 클릭한거
         filter.RemoveAt(0);
@@ -98,8 +94,7 @@ public class PanelInteract : MonoBehaviour
         {
             if (filter.Count <= 2) //가장 마지막에 부서진 패널 위치 정보 가져오기
             {
-                GameObject lastObj = filter[0];
-                lastObjPanel = lastObj.transform;
+                lastObj = filter[0].transform;
             }
             List<GameObject> addList = new List<GameObject>(); //이중리스트에 추가할 리스트
             foreach (GameObject obj in next[next.Count - 1]) //이중리스트 가장 마지막에 있는 것
@@ -113,6 +108,8 @@ public class PanelInteract : MonoBehaviour
             }
             if (addList.Count > 0) next.Add(addList);
         }
+
+        lastObjPanel = lastObj;
     }
 
     private void filterRemove()
@@ -251,7 +248,7 @@ public class PanelInteract : MonoBehaviour
         if (currentCount > 6)
         {
             LargeCreateElements(charac.GetElement().ToString());
-            GameObject item = Instantiate(createPanel.large_emptyPrefab, lastObjPanel.localPosition, Quaternion.identity);
+            GameObject item = Instantiate(createPanel.large_emptyPrefab, lastObjPanel.transform.localPosition, Quaternion.identity);
             item.transform.rotation = lastObjPanel.rotation;
             RawImage image = item.GetComponentInChildren<RawImage>();
             image.texture = charac.GetImage();
@@ -261,7 +258,7 @@ public class PanelInteract : MonoBehaviour
         else if (currentCount > 5)
         {
             createElements(charac.GetElement().ToString());
-            GameObject item = Instantiate(createPanel.emptyPrefab, lastObjPanel.localPosition, Quaternion.identity);
+            GameObject item = Instantiate(createPanel.emptyPrefab, lastObjPanel.transform.localPosition, Quaternion.identity);
             item.transform.rotation = lastObjPanel.rotation;
             RawImage image = item.GetComponentInChildren<RawImage>();
             image.texture = charac.GetImage();

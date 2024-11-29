@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.VFX;
 using Random = UnityEngine.Random;
 
 public class CreatePanel : MonoBehaviour

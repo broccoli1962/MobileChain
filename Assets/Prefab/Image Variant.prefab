@@ -34,11 +34,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 662611574364996891, guid: bab492397d764e740a45694dbcf11800, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 150
+      value: 170
       objectReference: {fileID: 0}
     - target: {fileID: 662611574364996891, guid: bab492397d764e740a45694dbcf11800, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 150
+      value: 170
       objectReference: {fileID: 0}
     - target: {fileID: 662611574364996891, guid: bab492397d764e740a45694dbcf11800, type: 3}
       propertyPath: m_LocalPosition.x
@@ -90,11 +90,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1652127172894747314, guid: bab492397d764e740a45694dbcf11800, type: 3}
       propertyPath: CharacterNumber
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2576902697499238151, guid: bab492397d764e740a45694dbcf11800, type: 3}
       propertyPath: m_Name
       value: Image Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 2576902697499238151, guid: bab492397d764e740a45694dbcf11800, type: 3}
+      propertyPath: m_TagString
+      value: character
       objectReference: {fileID: 0}
     - target: {fileID: 6793735107359919879, guid: bab492397d764e740a45694dbcf11800, type: 3}
       propertyPath: m_Color.b

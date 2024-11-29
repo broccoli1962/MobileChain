@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -23,13 +22,22 @@ public class PlayerSystem : MonoBehaviour
     private void Start()
     {
         stageManager = StageManager.instance;
+        stageManager.characterRotate = GameObject.FindAnyObjectByType<CharacterRotate>();
         stageManager.monsterManager = GameObject.FindAnyObjectByType<MonsterManager>();
-        FirstMonster();
+        FirstSetting();
     }
 
-    public void FirstMonster()
+    public void FirstSetting()
     {
+        for(int i = 0; i<stageManager.characters.Count; i++)
+        {
+            stageManager.SpawnCharacter(stageManager.characters[i]);
+            //crotate의 characterslots에 캐릭터 넣어줘야 버그 안생김
+           
+        }
+        crotate.CharacterSlots = crotate.GetComponentsInChildren<CharacterSlot>();
         stageManager.LoadStageMonster(stageManager.StageNumber, floorNumber);
+        stageManager.characters.Clear();
     }
 
     public void AddHealth(int health)
@@ -74,6 +82,10 @@ public class PlayerSystem : MonoBehaviour
         //몬스터 턴
         yield return new WaitForSeconds(2f);
         StartCoroutine(MonsterAttack());
+        if(currentHealth < 1)
+        {
+            Debug.Log("게임 오버 로직 제작");
+        }
 
         //턴 이동
         tcount.EnableTapCount();
