@@ -17,6 +17,8 @@ public class PlayerSystem : MonoBehaviour
 
     public HealthBar healthBar;
     public TextMeshProUGUI healthText;
+    public GameObject floorAnimation;
+    public TextMeshProUGUI floorText;
     StageManager stageManager;
 
     private void Start()
@@ -97,13 +99,18 @@ public class PlayerSystem : MonoBehaviour
         if (monsterManager.NextTarget() == null)
         {
             //몬스터 추가 전 애니메이션
-
+            yield return StartCoroutine(FloorAnimaition());
             //몬스터 추가
             stageManager.LoadStageMonster(stageManager.StageNumber, floorNumber);
             Debug.Log(floorNumber + " 층 몬스터 클리어");
             ++floorNumber;
         }
         turn = false;
+    }
+
+    IEnumerator FloorAnimaition()
+    {
+        yield return null;
     }
 
     IEnumerator PlayerHeal()
