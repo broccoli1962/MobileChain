@@ -68,21 +68,20 @@ public class StageManager : MonoBehaviour
 
             foreach(FloorData floor in stageData.floors)
             {
-                if(floor.floorNumber == floorNumber)
+                if(floor.floorNumber == floorNumber) //번호 다르면 바로 else가서 break 됨 이게 문제인듯
                 {
                     foreach (MonsterSpawnData monster in floor.monsters)
                     {
+                        Debug.Log("소환!");
                         SpawnMonster(monster.monsterNumber);
                     }
                 }
                 else
                 {
                     Debug.Log(floorNumber+"층 몬스터 출력 끝");
-                    break;
+                    continue;
                 }
             }
-
-            monsterManager.Refresh();
         }
     }
 

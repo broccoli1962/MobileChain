@@ -9,31 +9,6 @@ public class MonsterManager : MonoBehaviour
     [SerializeField] private int monsterIndex = 0;
     private Monster selectedMonster;
 
-    private void Start()
-    {
-        Refresh();
-    }
-
-    public void Refresh()
-    {
-        Monsters.Clear();
-        if (monsterSlotLine != null)
-        {
-            for (int i = 0; i < monsterSlotLine.childCount; i++)
-            {
-                Monster monster = monsterSlotLine.GetChild(i).GetComponent<Monster>();
-                if (monster != null)
-                {
-                    Monsters.Add(monster);
-                }
-                else
-                {
-                    Debug.Log("몬스터 발견 불가");
-                }
-            }
-        }
-    }
-
     public Monster NextTarget()
     {
         for (int i = 0; i < Monsters.Count; i++)

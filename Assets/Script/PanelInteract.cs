@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +16,8 @@ public class PanelInteract : MonoBehaviour
     [SerializeField] private ParticleSystem explosedPanel;
     
     Transform lastObjPanel;
+    Vector3 lastObjPosition;
+    Quaternion lastObjRotation;
     public int currentCount = 0;
     
     CreatePanel createPanel;
@@ -50,11 +54,6 @@ public class PanelInteract : MonoBehaviour
 
         clicked = true;
 
-        if (!playerSystem.turn)
-        {
-            tcount.TapDown(1);
-        }
-
         //색깔 분류 : 서로같은 색 리스트 생성
         List<GameObject> colorList = new();
         foreach(var panel in createPanel.panels)
@@ -70,6 +69,9 @@ public class PanelInteract : MonoBehaviour
         currentCount = filter.Count;
         filterSort(createPanel.panels[clickedPanel]);
         filterRemove();
+
+        tcount.TapDownImage();
+
         createPanel.PanelTime(true);
     }
 
@@ -95,6 +97,8 @@ public class PanelInteract : MonoBehaviour
             if (filter.Count <= 2) //가장 마지막에 부서진 패널 위치 정보 가져오기
             {
                 lastObj = filter[0].transform;
+                lastObjPosition = new Vector3(lastObj.localPosition.x, lastObj.localPosition.y, lastObj.localPosition.z);
+                lastObjRotation = new Quaternion(lastObj.localRotation.x, lastObj.localRotation.y, lastObj.localRotation.z, lastObj.localRotation.w);
             }
             List<GameObject> addList = new List<GameObject>(); //이중리스트에 추가할 리스트
             foreach (GameObject obj in next[next.Count - 1]) //이중리스트 가장 마지막에 있는 것
@@ -108,7 +112,6 @@ public class PanelInteract : MonoBehaviour
             }
             if (addList.Count > 0) next.Add(addList);
         }
-
         lastObjPanel = lastObj;
     }
 
@@ -159,6 +162,7 @@ public class PanelInteract : MonoBehaviour
     {
         clicked = false;
         createPanel.StartCoroutine(createPanel.create);
+        tcount.TapDown(1);
     }
 
     void ParticleColor(SpriteRenderer sprite)
@@ -245,11 +249,10 @@ public class PanelInteract : MonoBehaviour
     private void createPlayerPanel()
     {
         CharacterSlot charac = characterRotate.GetFirstSlot();
-        if (currentCount > 6)
+        if (currentCount > 11)
         {
             LargeCreateElements(charac.GetElement().ToString());
-            GameObject item = Instantiate(createPanel.large_emptyPrefab, lastObjPanel.transform.localPosition, Quaternion.identity);
-            item.transform.rotation = lastObjPanel.rotation;
+            GameObject item = Instantiate(createPanel.large_emptyPrefab, lastObjPosition, lastObjRotation);
             RawImage image = item.GetComponentInChildren<RawImage>();
             image.texture = charac.GetImage();
             item.transform.SetParent(GameObject.Find("Panels").transform, false);
@@ -258,8 +261,7 @@ public class PanelInteract : MonoBehaviour
         else if (currentCount > 5)
         {
             createElements(charac.GetElement().ToString());
-            GameObject item = Instantiate(createPanel.emptyPrefab, lastObjPanel.transform.localPosition, Quaternion.identity);
-            item.transform.rotation = lastObjPanel.rotation;
+            GameObject item = Instantiate(createPanel.emptyPrefab, lastObjPosition, lastObjRotation);
             RawImage image = item.GetComponentInChildren<RawImage>();
             image.texture = charac.GetImage();
             item.transform.SetParent(GameObject.Find("Panels").transform, false);

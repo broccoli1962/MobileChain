@@ -23,14 +23,20 @@ public class TapCount : MonoBehaviour
         {
             tapCount -= t;
 
-            if(tapCount>=0 && tapCount < tap.Length && tap[tapCount] != null)
-            {
-                tap[tapCount].gameObject.SetActive(false);
-            }
             if (tapCount <= 0)
             {
                 StartCoroutine(playerSystem.AttackLogic());
             }
+        }
+    }
+
+    public void TapDownImage()
+    {
+        int taps = tapCount-1;
+
+        if (taps >= 0 && taps < tap.Length && tap[taps] != null)
+        {
+            tap[taps].gameObject.SetActive(false);
         }
     }
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerSystem : MonoBehaviour
@@ -14,19 +15,91 @@ public class PlayerSystem : MonoBehaviour
 
     [SerializeField] private CharacterRotate crotate;
     [SerializeField] private TapCount tcount;
+    [SerializeField] private RectTransform floor;
 
     public HealthBar healthBar;
     public TextMeshProUGUI healthText;
-    public GameObject floorAnimation;
     public TextMeshProUGUI floorText;
     StageManager stageManager;
 
     private void Start()
     {
         stageManager = StageManager.instance;
+        StartCoroutine(FloorAnimaition());
         stageManager.characterRotate = GameObject.FindAnyObjectByType<CharacterRotate>();
         stageManager.monsterManager = GameObject.FindAnyObjectByType<MonsterManager>();
+        
         FirstSetting();
+    }
+
+    public IEnumerator AttackLogic()
+    {
+        turn = true; //탭 금지용 bool
+        yield return new WaitForSeconds(2f);
+
+        //플레이어 턴
+        MonsterManager monsterManager = GameObject.Find("MonsterManager").GetComponent<MonsterManager>();
+        Monster selectMonster = monsterManager.GetMonster();
+
+        if (selectMonster != null)
+        {
+            yield return StartCoroutine(selectMonster.TakeDamage(totalBreak));
+        }
+        StartCoroutine(PlayerHeal());
+
+        //몬스터 턴
+        yield return new WaitForSeconds(2f);
+        StartCoroutine(MonsterAttack());
+        if (currentHealth < 1)
+        {
+            Debug.Log("게임 오버 로직 제작");
+        }
+
+        //턴 이동
+        tcount.EnableTapCount();
+        crotate.NextTurn();
+        totalBreak = 0;
+        totalheal = 0;
+        tcount.tapCount = canTapCount;
+        //몬스터 인스턴스 추가 -> refresh();
+        if (monsterManager.NextTarget() == null)
+        {
+            floorNumber++;
+            //몬스터 추가 전 애니메이션
+            yield return StartCoroutine(FloorAnimaition());
+            //몬스터 추가
+            stageManager.LoadStageMonster(stageManager.StageNumber, floorNumber);
+            Debug.Log(floorNumber + " 층 몬스터 클리어");
+        }
+        turn = false;
+    }
+
+    IEnumerator FloorAnimaition()
+    {
+        float animationTime = 0.3f;
+        float nowTime = 0f;
+
+        floorText.text = (floorNumber+1).ToString() + " FLOOR";
+
+        yield return new WaitForSeconds(1f);
+
+        while (nowTime < animationTime)
+        {
+            floor.localPosition = Vector3.Lerp(floor.localPosition, new Vector3(0, floor.localPosition.y, floor.localPosition.z), nowTime / animationTime);
+            nowTime += Time.deltaTime;
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(1f);
+    
+        nowTime = 0f;
+        while (nowTime < animationTime) {
+            floor.localPosition = Vector3.Lerp(floor.localPosition, new Vector3(-1080, floor.localPosition.y, floor.localPosition.z), nowTime / animationTime);
+            nowTime += Time.deltaTime;
+            yield return null;
+        }
+
+        floor.localPosition = new Vector3(1080, floor.localPosition.y, floor.localPosition.z);
     }
 
     public void FirstSetting()
@@ -64,53 +137,6 @@ public class PlayerSystem : MonoBehaviour
         {
             healthText.text = "0" + " / " + maxHealth;
         }
-    }
-
-    public IEnumerator AttackLogic()
-    {
-        turn = true; //탭 금지용 bool
-        yield return new WaitForSeconds(2f);
-
-        //플레이어 턴
-        MonsterManager monsterManager = GameObject.Find("MonsterManager").GetComponent<MonsterManager>();
-        Monster selectMonster = monsterManager.GetMonster();
-
-        if (selectMonster != null)
-        {
-            yield return StartCoroutine(selectMonster.TakeDamage(totalBreak));
-        }
-        StartCoroutine(PlayerHeal());
-
-        //몬스터 턴
-        yield return new WaitForSeconds(2f);
-        StartCoroutine(MonsterAttack());
-        if(currentHealth < 1)
-        {
-            Debug.Log("게임 오버 로직 제작");
-        }
-
-        //턴 이동
-        tcount.EnableTapCount();
-        crotate.NextTurn();
-        totalBreak = 0;
-        totalheal = 0;
-        tcount.tapCount = canTapCount;
-        //몬스터 인스턴스 추가 -> refresh();
-        if (monsterManager.NextTarget() == null)
-        {
-            //몬스터 추가 전 애니메이션
-            yield return StartCoroutine(FloorAnimaition());
-            //몬스터 추가
-            stageManager.LoadStageMonster(stageManager.StageNumber, floorNumber);
-            Debug.Log(floorNumber + " 층 몬스터 클리어");
-            ++floorNumber;
-        }
-        turn = false;
-    }
-
-    IEnumerator FloorAnimaition()
-    {
-        yield return null;
     }
 
     IEnumerator PlayerHeal()
