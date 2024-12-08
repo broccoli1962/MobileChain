@@ -13,6 +13,7 @@ public class Monster : MonoBehaviour
     private CharacterRotate character;
     public ParticleSystem AttackParticle;
     public TextMeshProUGUI monsterTurnCount;
+    public GameObject bullet;
     public int NowHp;
     public int MaxHealth;
     public int count;
@@ -97,7 +98,7 @@ public class Monster : MonoBehaviour
         particleInstance.Play();
         yield return StartCoroutine(HealthBar.SetHealth(NowHp));
 
-        if(NowHp < 0)
+        if(NowHp <= 0)
         {
             MonsterManager manager = FindAnyObjectByType<MonsterManager>();
             Monster nextMonster = manager.NextTarget();
@@ -144,19 +145,25 @@ public class Monster : MonoBehaviour
         CharacterSlot slot3 = character.GetThirdSlot();
         CharacterSlot slot4 = character.GetFourSlot();
 
+        CharacterSlot temp = null;
+
         switch (rand)
         {
             case 0:
                 damage -= slot1.GetArmor();
+                temp = slot1;
                 break;
             case 1:
                 damage -= slot2.GetArmor();
+                temp = slot2;
                 break;
             case 2:
                 damage -= slot3.GetArmor();
+                temp = slot3;
                 break;
             case 3:
                 damage -= slot4.GetArmor();
+                temp = slot4;
                 break;
         }
 
@@ -166,10 +173,38 @@ public class Monster : MonoBehaviour
             damage = 0;
         }
 
-        manager.currentHealth -= damage; 
+        //단일 공격
+        Debug.Log(gameObject.transform.localPosition);
+        Debug.Log(temp.GetComponent<RectTransform>().localPosition+"도착 위치임");
+        yield return StartCoroutine(AttackAnimation(temp));
+        manager.currentHealth -= damage;
         Debug.Log(this.name + "공격완료 현재체력 = " + manager.currentHealth);
         count = GetCount();
         yield return StartCoroutine(manager.healthBar.SetHealth(manager.currentHealth));
+    }
+
+    IEnumerator AttackAnimation(CharacterSlot charac)
+    {
+        float speed = 1500f; // 이동 속도 조절
+
+        GameObject item = Instantiate(bullet, Vector3.zero, Quaternion.identity);
+        item.transform.SetParent(this.transform, false);
+
+        RectTransform itemRectTransform = item.GetComponent<RectTransform>();
+        Canvas canvas = item.GetComponentInParent<Canvas>();
+
+        Vector3 targetWorldPosition = charac.transform.position;
+        Vector2 localPoint;
+
+        Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(canvas.worldCamera, targetWorldPosition);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)this.transform, screenPoint, canvas.worldCamera, out localPoint);
+
+        while (Vector2.Distance(itemRectTransform.anchoredPosition, localPoint) > 0.1f) // 목표 지점에 도착했는지 확인
+        {
+            itemRectTransform.anchoredPosition = Vector2.MoveTowards(itemRectTransform.anchoredPosition, localPoint, speed * Time.deltaTime);
+            yield return null;
+        }
+        Destroy(item);
     }
 
     public int GetHealth() => MonsterStats.Health;

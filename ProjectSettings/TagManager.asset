@@ -11,6 +11,7 @@ TagManager:
   - Monster
   - CLPanel
   - character
+  - GameOverUI
   layers:
   - Default
   - TransparentFX

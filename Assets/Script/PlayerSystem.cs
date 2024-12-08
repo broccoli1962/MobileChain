@@ -1,7 +1,8 @@
+using NUnit.Framework.Constraints;
 using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerSystem : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class PlayerSystem : MonoBehaviour
     public HealthBar healthBar;
     public TextMeshProUGUI healthText;
     public TextMeshProUGUI floorText;
+    public GameOverManager gameOver;
+
     StageManager stageManager;
 
     private void Start()
@@ -28,7 +31,8 @@ public class PlayerSystem : MonoBehaviour
         StartCoroutine(FloorAnimaition());
         stageManager.characterRotate = GameObject.FindAnyObjectByType<CharacterRotate>();
         stageManager.monsterManager = GameObject.FindAnyObjectByType<MonsterManager>();
-        
+        gameOver = GameObject.FindAnyObjectByType<GameOverManager>();
+
         FirstSetting();
     }
 
@@ -49,10 +53,12 @@ public class PlayerSystem : MonoBehaviour
 
         //몬스터 턴
         yield return new WaitForSeconds(2f);
-        StartCoroutine(MonsterAttack());
+        yield return StartCoroutine(MonsterAttack());
+        
         if (currentHealth < 1)
         {
-            Debug.Log("게임 오버 로직 제작");
+            yield return StartCoroutine(DeathAnimation());
+            yield break;
         }
 
         //턴 이동
@@ -66,10 +72,19 @@ public class PlayerSystem : MonoBehaviour
         {
             floorNumber++;
             //몬스터 추가 전 애니메이션
-            yield return StartCoroutine(FloorAnimaition());
-            //몬스터 추가
-            stageManager.LoadStageMonster(stageManager.StageNumber, floorNumber);
-            Debug.Log(floorNumber + " 층 몬스터 클리어");
+            ScriptableStage stage = stageManager.LoadStage(stageManager.StageNumber);
+            if(stage.floors.Count > floorNumber)
+            {
+                monsterManager.monsterIndex = 0;
+                yield return StartCoroutine(FloorAnimaition());
+                //몬스터 추가
+                stageManager.LoadStageMonster(stageManager.StageNumber, floorNumber);
+            }
+            else
+            {
+                yield return StartCoroutine(ClearAnimation());
+                yield break;
+            }
         }
         turn = false;
     }
@@ -127,6 +142,89 @@ public class PlayerSystem : MonoBehaviour
         HpTextSet();
     }
 
+    IEnumerator ClearAnimation()
+    {
+        gameOver.gameOverScene.SetActive(true);
+
+        //씬 토대
+        Image sceneImage = gameOver.gameOverScene.GetComponent<Image>();
+        Color startColor = sceneImage.color;
+        Color endColor = sceneImage.color;
+        endColor.a = 1;
+
+        //데코 이미지2개
+        Image dec1 = gameOver.deco1.GetComponent<Image>();
+        Image dec2 = gameOver.deco2.GetComponent<Image>();
+        Color decStartColor = dec1.color;
+        Color decEndColor = dec1.color;
+        decEndColor.a = 1;
+
+        //텍스트 선명도
+        TextMeshProUGUI text1 = gameOver.text1.GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI text2 = gameOver.text2.GetComponent<TextMeshProUGUI>();
+        Color textStartColor = text1.color;
+        Color textEndColor = text1.color;
+        textEndColor.a = 1;
+        text1.text = "Stage Clear!";
+
+        float duringTime = 1.5f;
+        float time = 0;
+
+        while (time < duringTime)
+        {
+            time += Time.deltaTime;
+            float t = time / duringTime;
+
+            sceneImage.color = Color.Lerp(startColor, endColor, t);
+            dec1.color = Color.Lerp(decStartColor, decEndColor, t);
+            dec2.color = Color.Lerp(decStartColor, decEndColor, t);
+            text1.color = Color.Lerp(textStartColor, textEndColor, t);
+            text2.color = Color.Lerp(textStartColor, textEndColor, t);
+            yield return null;
+        }
+    }
+
+    IEnumerator DeathAnimation()
+    {
+        gameOver.gameOverScene.SetActive(true);
+        
+        //씬 토대
+        Image sceneImage = gameOver.gameOverScene.GetComponent<Image>();
+        Color startColor = sceneImage.color;
+        Color endColor = sceneImage.color;
+        endColor.a = 1;
+
+        //데코 이미지2개
+        Image dec1 = gameOver.deco1.GetComponent<Image>();
+        Image dec2 = gameOver.deco2.GetComponent<Image>();
+        Color decStartColor = dec1.color;
+        Color decEndColor = dec1.color;
+        decEndColor.a = 1;
+
+        //텍스트 선명도
+        TextMeshProUGUI text1 = gameOver.text1.GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI text2 = gameOver.text2.GetComponent<TextMeshProUGUI>();
+        Color textStartColor = text1.color;
+        Color textEndColor = text1.color;
+        textEndColor.a = 1;
+
+        float duringTime = 1.5f;
+        float time = 0;
+
+        while (time < duringTime)
+        {
+            time += Time.deltaTime;
+            float t = time / duringTime;
+
+            sceneImage.color = Color.Lerp(startColor, endColor, t);
+            dec1.color = Color.Lerp(decStartColor, decEndColor, t);
+            dec2.color = Color.Lerp(decStartColor, decEndColor, t);
+            text1.color = Color.Lerp(textStartColor, textEndColor, t);
+            text2.color = Color.Lerp(textStartColor,textEndColor, t);
+            yield return null;
+        }
+    }
+
     public void HpTextSet()
     {
         if (currentHealth > 0)
@@ -154,7 +252,7 @@ public class PlayerSystem : MonoBehaviour
         //모든 몬스터 리스트
         for (int i = 0; i < monsterManager.Monsters.Count; i++)
         {
-            if (monsterManager.Monsters != null)
+            if (monsterManager.Monsters[i] != null)
             {
                 yield return StartCoroutine(monsterManager.Monsters[i].MonsterTurn());
             }

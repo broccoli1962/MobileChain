@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TouchPanel : MonoBehaviour
 {
@@ -40,6 +41,13 @@ public class TouchPanel : MonoBehaviour
                 {
                     Debug.Log("ui 클릭함");
                     return;
+                }
+            }
+            foreach(RaycastHit2D ray in rayhit)
+            {
+                if (ray.transform.CompareTag("GameOverUI"))
+                {
+                    SceneManager.LoadScene("MenuScene");
                 }
             }
             foreach (RaycastHit2D ray in rayhit)

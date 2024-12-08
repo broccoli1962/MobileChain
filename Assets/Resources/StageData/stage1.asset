@@ -21,7 +21,6 @@ MonoBehaviour:
   - floorNumber: 1
     monsters:
     - monsterNumber: 1
-    - monsterNumber: 1
   - floorNumber: 2
     monsters:
     - monsterNumber: 1

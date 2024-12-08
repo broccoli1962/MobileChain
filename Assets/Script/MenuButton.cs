@@ -10,6 +10,8 @@ public class MenuButton : MonoBehaviour
     [SerializeField] private GameObject characterList;
     private bool openClose;
     public TextMeshProUGUI stageText;
+    public GameObject alterBox;
+    public TextMeshProUGUI alterText;
 
     public void Start()
     {
@@ -21,9 +23,11 @@ public class MenuButton : MonoBehaviour
 
         ScriptableStage stageData = stageManager.LoadStage(stageManager.StageNumber);
 
-        if(stageManager.characters.Count < 1)
+        if(stageManager.characters.Count < 2)
         {
-            Debug.Log("캐릭터가 없음");
+            alterText.text = "캐릭터가 없거나 한명임";
+            alterBox.SetActive(true);
+            Debug.Log("캐릭터가 없거나 한명임");
             return;
         }
 
@@ -33,9 +37,16 @@ public class MenuButton : MonoBehaviour
         }
         else
         {
+            alterText.text = stageManager.StageNumber.ToString() + " 스테이지 정보 없음";
+            alterBox.SetActive(true);
             Debug.LogError(stageManager.StageNumber + "스테이지 정보 없음");
         }
         Debug.Log(stageManager.StageNumber);
+    }
+
+    public void CloseAlter()
+    {
+        alterBox.SetActive(false);
     }
 
     public void OpenCloseCharacterList()

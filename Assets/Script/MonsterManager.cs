@@ -6,7 +6,7 @@ public class MonsterManager : MonoBehaviour
 {
     public List<Monster> Monsters = new List<Monster>();
     public Transform monsterSlotLine;
-    [SerializeField] private int monsterIndex = 0;
+    public int monsterIndex = 0;
     private Monster selectedMonster;
 
     public Monster NextTarget()

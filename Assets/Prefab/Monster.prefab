@@ -468,6 +468,7 @@ MonoBehaviour:
   HealthBar: {fileID: 4751414144912301549}
   AttackParticle: {fileID: 7335150146480523833, guid: 02865b0182a03b2428feeb788de8df18, type: 3}
   monsterTurnCount: {fileID: 8936246482082339884}
+  bullet: {fileID: 3949650340959135253, guid: 07c5b7f04967ca640a2575352869db91, type: 3}
   NowHp: 0
   MaxHealth: 0
   count: 0
