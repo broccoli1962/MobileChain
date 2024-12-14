@@ -80,7 +80,20 @@ public class PanelInteract : MonoBehaviour
         //총 부순 개수 개수
         if (value != "heart")
         {
-            playerSystem.totalBreak += filter.Count;
+            foreach(GameObject panel in filter)
+            {
+                if (panel.CompareTag("CPanel"))
+                {
+                    playerSystem.totalBreak += 2;
+                }else if (panel.CompareTag("CLPanel"))
+                {
+                    playerSystem.totalBreak += 3;
+                }
+                else
+                {
+                    playerSystem.totalBreak += 1;
+                }
+            }
         }
         else
         {
@@ -216,8 +229,6 @@ public class PanelInteract : MonoBehaviour
 
             Collider2D[] Colliders = Physics2D.OverlapCircleAll(center.bounds.center, boomRadius);
 
-            Debug.Log(Colliders.Length + "개 범위 파악 완료");
-
             foreach (Collider2D searchCollider in Colliders)
             {
                 if (searchCollider.gameObject.CompareTag("Panel"))
@@ -236,7 +247,7 @@ public class PanelInteract : MonoBehaviour
                 {
                     createPanel.panels.Remove(searchCollider.gameObject);
                     Destroy(searchCollider.gameObject);
-                    playerSystem.totalBreak++;
+                    playerSystem.totalBreak+=3;
                     booms.Add(CreateBoom(searchCollider.gameObject.transform)); //새롭게 터칠 목록에 추가
                 }
             }

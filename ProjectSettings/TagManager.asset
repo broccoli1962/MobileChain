@@ -12,6 +12,7 @@ TagManager:
   - CLPanel
   - character
   - GameOverUI
+  - CPanel
   layers:
   - Default
   - TransparentFX

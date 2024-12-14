@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 4370750156509473143}
   m_Layer: 5
   m_Name: Cpanel
-  m_TagString: Panel
+  m_TagString: CPanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
