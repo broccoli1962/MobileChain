@@ -11,12 +11,13 @@ public class Monster : MonoBehaviour
     public HealthBar HealthBar;
     private CharacterRotate character;
     public ParticleSystem AttackParticle;
+    public ParticleSystem FullAttackParticle;
     public TextMeshProUGUI monsterTurnCount;
     public GameObject bullet;
     public int NowHp;
     public int MaxHealth;
     public int count;
-    public List<string> patterns;
+    public List<Pattern> patterns;
     [SerializeField] public int MonsterNumber;
     [SerializeField] private RawImage image;
     [SerializeField] private UnityEngine.UI.Image targeting;
@@ -57,7 +58,7 @@ public class Monster : MonoBehaviour
     {
         if (MonsterStats.pattern != null)
         {
-            foreach (string p in MonsterStats.pattern)
+            foreach (Pattern p in MonsterStats.pattern)
             {
                 patterns.Add(p);
             }
@@ -187,25 +188,29 @@ public class Monster : MonoBehaviour
         {
             monsterTurnCount.text = count.ToString();
             int damage = this.GetDamage();
-            switch (patterns[0])
+            Pattern.attackType patternName = patterns[0].attackTypes;
+            float multifular = patterns[0].multifular;
+            int attackCount = patterns[0].count;
+            bool spread = patterns[0].spread;
+            switch (patternName)
             {
-                case "전체공격":
-                    yield return StartCoroutine(GiveDamageAll(damage));
-                    Debug.Log(patterns[0]);
+                case Pattern.attackType.full: //전체공격
+                    yield return StartCoroutine(GiveDamageAll((int)(damage * multifular), attackCount));
+                    Debug.Log(patterns[0] + " " + (int)(damage * multifular) + "배율" + attackCount + "회 공격");
                     patterns.RemoveAt(0);
                     break;
-                case "단일공격":
-                    yield return StartCoroutine(GiveDamage(damage));
-                    Debug.Log(patterns[0]);
+                case Pattern.attackType.single: //단일공격
+                    yield return StartCoroutine(GiveDamage((int)(damage * multifular), attackCount, spread));
+                    Debug.Log(patterns[0] + " " + (int)(damage * multifular) + "배율" + attackCount + "회 공격");
                     patterns.RemoveAt(0);
                     break;
-                case "즉사공격":
-                    yield return StartCoroutine(GiveDamage(damage*100));
+                case Pattern.attackType.death: //즉사공격
+                    yield return StartCoroutine(GiveDamageAll(damage*100, 1));
                     patterns.RemoveAt(0);
                     break;
                 default:
                     Debug.Log("리스트에 비었음");
-                    yield return StartCoroutine(GiveDamage(damage));
+                    yield return StartCoroutine(GiveDamage(damage, 1, false));
                     break;
             }
         }
@@ -213,7 +218,7 @@ public class Monster : MonoBehaviour
         yield return null;
     }
 
-    public IEnumerator GiveDamageAll(int damage)
+    public IEnumerator GiveDamageAll(int damage, int attackCount)
     {
         PlayerSystem manager = FindAnyObjectByType<PlayerSystem>();
         int totalArmor = 0;
@@ -231,12 +236,16 @@ public class Monster : MonoBehaviour
             dm = 0;
         }
 
+        ParticleSystem particleInstance = Instantiate(FullAttackParticle, this.transform.position, FullAttackParticle.transform.rotation);
+        particleInstance.Play();
+
         manager.currentHealth -= dm;
-        count = GetCount();
         yield return StartCoroutine(manager.healthBar.SetHealth(manager.currentHealth));
+        Destroy(particleInstance.gameObject, particleInstance.main.duration);
+        count = GetCount();
     }
 
-    public IEnumerator GiveDamage(int damage) //전체 공격, 단일 대상 공격, 특정 속성 공격 제작예정, 공격 방식은 json string으로 받는다.
+    public IEnumerator GiveDamage(int damage, int attackCount, bool spread)
     {
         //공격하는 기능
         PlayerSystem manager = FindAnyObjectByType<PlayerSystem>();
@@ -249,41 +258,47 @@ public class Monster : MonoBehaviour
         CharacterSlot temp = null;
         int dm = 0;
 
-        switch (rand)
+        while(attackCount > 0)
         {
-            case 0:
-                dm = ElementsLogic(1, damage, slot1.GetElement(), this.GetElement(), false);
-                dm -= slot1.GetArmor();
-                temp = slot1;
-                break;
-            case 1:
-                dm = ElementsLogic(1, damage, slot1.GetElement(), this.GetElement(), false);
-                dm -= slot2.GetArmor();
-                temp = slot2;
-                break;
-            case 2:
-                dm = ElementsLogic(1, damage, slot1.GetElement(), this.GetElement(), false);
-                dm -= slot3.GetArmor();
-                temp = slot3;
-                break;
-            case 3:
-                dm = ElementsLogic(1, damage, slot1.GetElement(), this.GetElement(), false);
-                dm -= slot4.GetArmor();
-                temp = slot4;
-                break;
-        }
+            if (spread) rand = Random.Range(0, 4);
+            switch (rand)
+            {
+                case 0:
+                    dm = ElementsLogic(1, damage, slot1.GetElement(), this.GetElement(), false);
+                    dm -= slot1.GetArmor();
+                    temp = slot1;
+                    break;
+                case 1:
+                    dm = ElementsLogic(1, damage, slot1.GetElement(), this.GetElement(), false);
+                    dm -= slot2.GetArmor();
+                    temp = slot2;
+                    break;
+                case 2:
+                    dm = ElementsLogic(1, damage, slot1.GetElement(), this.GetElement(), false);
+                    dm -= slot3.GetArmor();
+                    temp = slot3;
+                    break;
+                case 3:
+                    dm = ElementsLogic(1, damage, slot1.GetElement(), this.GetElement(), false);
+                    dm -= slot4.GetArmor();
+                    temp = slot4;
+                    break;
+            }
 
-        //방어력이 공격력보다 높은 경우
-        if (dm <= 0)
-        {
-            dm = 0;
-        }
+            //방어력이 공격력보다 높은 경우
+            if (dm <= 0)
+            {
+                dm = 0;
+            }
 
-        //단일 공격
-        yield return StartCoroutine(AttackAnimation(temp));
-        manager.currentHealth -= dm;
-        count = GetCount();
+            //단일 공격
+            yield return StartCoroutine(AttackAnimation(temp));
+            manager.currentHealth -= dm;
+            attackCount--;
+            yield return null;
+        }
         yield return StartCoroutine(manager.healthBar.SetHealth(manager.currentHealth));
+        count = GetCount();
     }
 
     IEnumerator AttackAnimation(CharacterSlot charac)

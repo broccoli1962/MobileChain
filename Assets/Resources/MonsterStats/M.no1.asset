@@ -18,5 +18,7 @@ MonoBehaviour:
   Count: 4
   image: {fileID: 10912, guid: 0000000000000000f000000000000000, type: 0}
   pattern:
-  - "\uC804\uCCB4\uACF5\uACA9"
+  - attackTypes: 1
+    multifular: 1
+    count: 1
   type: 0

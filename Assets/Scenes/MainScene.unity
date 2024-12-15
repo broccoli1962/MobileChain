@@ -3484,7 +3484,7 @@ MonoBehaviour:
   healthBar: {fileID: 1519125427}
   healthText: {fileID: 2023713213}
   floorText: {fileID: 1931344148}
-  gameOver: {fileID: 0}
+  gameOver: {fileID: 37952118}
 --- !u!4 &1495759687
 Transform:
   m_ObjectHideFlags: 0
