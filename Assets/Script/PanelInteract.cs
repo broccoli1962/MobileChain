@@ -27,6 +27,8 @@ public class PanelInteract : MonoBehaviour
     SystemManager system;
     PlayerSystem playerSystem;
 
+    AudioClip clip;
+
     public float boomRadius = 15f;
     public static float distance;
     bool clicked;
@@ -35,6 +37,7 @@ public class PanelInteract : MonoBehaviour
     {
         distance = 10f; //* (Screen.width / 720f);
         system = SystemManager.Instance;
+        audioManage = AudioManager.Instance;
         playerSystem = FindAnyObjectByType<PlayerSystem>();
         characterRotate = FindAnyObjectByType<CharacterRotate>();
         GameObject obj = GameObject.Find("PanelManager");
@@ -154,7 +157,8 @@ public class PanelInteract : MonoBehaviour
 
                 copyList.Add(obj);
             }
-            audioManage.PopSound();
+            audioManage.SoundPlay("pop", clip);
+            //audioManage.PopSound();
             Invoke("filterRemove", 0.2f);
         } else
         {
