@@ -470,6 +470,8 @@ MonoBehaviour:
   FullAttackParticle: {fileID: 3130658327286344544, guid: b19d7ce845411284dacafe8f93c6893d, type: 3}
   monsterTurnCount: {fileID: 8936246482082339884}
   bullet: {fileID: 3949650340959135253, guid: 07c5b7f04967ca640a2575352869db91, type: 3}
+  LogPrefab: {fileID: 8392824781764641030, guid: 543286702a400734bb7c6fd3c771b9a9, type: 3}
+  LogContent: {fileID: 0}
   NowHp: 0
   MaxHealth: 0
   count: 0

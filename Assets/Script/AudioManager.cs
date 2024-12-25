@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    public AudioSource audioSource;
-    public AudioSource audioSource2;
+    AudioSource audioSource;
     [Header ("PanelPopSound")]
     public AudioClip bloom;
     public AudioClip TakeDamage;
+    public AudioClip clicked;
 
     public static AudioManager Instance;
 
@@ -25,16 +25,6 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void SoundPlay(string Name, AudioClip clip)
-    {
-        GameObject gameObject = new GameObject(Name + "Sound");
-        AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.clip = clip;
-        audioSource.Play();
-
-        Destroy(gameObject, clip.length);
-    }
-
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -45,6 +35,10 @@ public class AudioManager : MonoBehaviour
     }
     public void TakeSound()
     {
-        audioSource2.PlayOneShot(TakeDamage);
+        audioSource.PlayOneShot(TakeDamage);
+    }
+    public void ClickSound()
+    {
+        audioSource.PlayOneShot(clicked);
     }
 }

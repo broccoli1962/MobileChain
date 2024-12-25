@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -5,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuButton : MonoBehaviour
 {
+    AudioManager audioManage;
     StageManager stageManager;
     [SerializeField] private Transform characterSlots;
     [SerializeField] private GameObject characterList;
@@ -13,13 +15,19 @@ public class MenuButton : MonoBehaviour
     public GameObject alterBox;
     public TextMeshProUGUI alterText;
 
+    public GameObject CharacterInfo;
+    public float pressedTime = 2.5f;
+
+
     public void Start()
     {
+        audioManage = AudioManager.Instance;
         stageManager = StageManager.instance;
     }
     public void Select(TextMeshProUGUI text)
     {
         stageManager.StageNumber = int.Parse(text.text);
+        audioManage.ClickSound();
 
         ScriptableStage stageData = stageManager.LoadStage(stageManager.StageNumber);
 
@@ -51,6 +59,7 @@ public class MenuButton : MonoBehaviour
 
     public void OpenCloseCharacterList()
     {
+        audioManage.ClickSound();
         if (openClose)
         {
             characterList.SetActive(false);
@@ -67,6 +76,8 @@ public class MenuButton : MonoBehaviour
     {
         GameObject clickObject = EventSystem.current.currentSelectedGameObject;
         CharacterSlot slot = clickObject.GetComponent<CharacterSlot>();
+
+        audioManage.ClickSound();
 
         if (clickObject.transform.IsChildOf(characterSlots))
         {

@@ -14,6 +14,8 @@ public class Monster : MonoBehaviour
     public ParticleSystem FullAttackParticle;
     public TextMeshProUGUI monsterTurnCount;
     public GameObject bullet;
+    AudioManager audioManage;
+    LogSystem logManage;
     public int NowHp;
     public int MaxHealth;
     public int count;
@@ -26,6 +28,9 @@ public class Monster : MonoBehaviour
     private void Start()
     {
         SystemManager system = SystemManager.Instance;
+        
+        audioManage = AudioManager.Instance;
+        logManage = FindAnyObjectByType<LogSystem>();
         character = FindAnyObjectByType<CharacterRotate>();
         //몬스터 종류 파악
         MonsterStats = system.GetMonsterStat(MonsterNumber);
@@ -39,6 +44,7 @@ public class Monster : MonoBehaviour
         count = GetCount();
         //몬스터 패턴 설정
         SetPattern();
+        Debug.Log(patterns[0].attackTypes);
 
         if (targeting != null)
         {
@@ -46,13 +52,13 @@ public class Monster : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if(patterns.Count == 0)
-        {
-            SetPattern();
-        }
-    }
+    //private void Update()
+    //{
+    //    if(patterns.Count == 0)
+    //    {
+    //        SetPattern();
+    //    }
+    //}
 
     public void SetPattern()
     {
@@ -181,10 +187,11 @@ public class Monster : MonoBehaviour
         }
         return Totaldamage;
     }
+
     public IEnumerator MonsterTurn()
     {
         count--;
-        if(count == 0 && this != null)
+        if (count == 0 && this != null)
         {
             monsterTurnCount.text = count.ToString();
             int damage = this.GetDamage();
@@ -213,7 +220,15 @@ public class Monster : MonoBehaviour
                     yield return StartCoroutine(GiveDamage(damage, 1, false));
                     break;
             }
+            if (patterns.Count == 0)
+            {
+                SetPattern();
+            }
+            //다음 패턴 알림 함수 제작
+            string logText = "다음패턴 " + patterns[0].attackTypes+ "\n" + (int)(damage * multifular) + "배율 " + attackCount + "회 공격";
+            logManage.InsertLog(logText);
         }
+
         monsterTurnCount.text = count.ToString();
         yield return null;
     }
@@ -238,6 +253,7 @@ public class Monster : MonoBehaviour
 
         ParticleSystem particleInstance = Instantiate(FullAttackParticle, this.transform.position, FullAttackParticle.transform.rotation);
         particleInstance.Play();
+        audioManage.TakeSound();
 
         manager.currentHealth -= dm;
         yield return StartCoroutine(manager.healthBar.SetHealth(manager.currentHealth));
@@ -322,6 +338,7 @@ public class Monster : MonoBehaviour
             itemRectTransform.anchoredPosition = Vector2.MoveTowards(itemRectTransform.anchoredPosition, localPoint, speed * Time.deltaTime);
             yield return null;
         }
+        audioManage.TakeSound();
         Destroy(item);
     }
 

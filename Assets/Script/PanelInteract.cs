@@ -15,7 +15,6 @@ public class PanelInteract : MonoBehaviour
 
     [SerializeField] private ParticleSystem explosedPanel;
     
-    Transform lastObjPanel;
     Vector3 lastObjPosition;
     Quaternion lastObjRotation;
     public int currentCount = 0;
@@ -24,10 +23,7 @@ public class PanelInteract : MonoBehaviour
     CharacterRotate characterRotate;
     AudioManager audioManage;
     TapCount tcount;
-    SystemManager system;
     PlayerSystem playerSystem;
-
-    AudioClip clip;
 
     public float boomRadius = 15f;
     public static float distance;
@@ -36,14 +32,12 @@ public class PanelInteract : MonoBehaviour
     private void Start()
     {
         distance = 10f; //* (Screen.width / 720f);
-        system = SystemManager.Instance;
         audioManage = AudioManager.Instance;
         playerSystem = FindAnyObjectByType<PlayerSystem>();
         characterRotate = FindAnyObjectByType<CharacterRotate>();
         GameObject obj = GameObject.Find("PanelManager");
         createPanel = obj.GetComponent<CreatePanel>();
         GameObject obj2 = GameObject.Find("AudioManager");
-        audioManage = obj2.GetComponent<AudioManager>();
         tcount = GameObject.Find("TouchCountBase").GetComponent<TapCount>();
     }
 
@@ -128,7 +122,6 @@ public class PanelInteract : MonoBehaviour
             }
             if (addList.Count > 0) next.Add(addList);
         }
-        lastObjPanel = lastObj;
     }
 
     private void filterRemove()
@@ -157,8 +150,7 @@ public class PanelInteract : MonoBehaviour
 
                 copyList.Add(obj);
             }
-            audioManage.SoundPlay("pop", clip);
-            //audioManage.PopSound();
+            audioManage.PopSound();
             Invoke("filterRemove", 0.2f);
         } else
         {
