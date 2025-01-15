@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="AudioManager">
+    <Position X="33.5" Y="7.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAgACAAAAAAAAAAAAAAAIAAEAAAQAAgwAAAAEA=</HashCode>
+      <FileName>Assets\Script\AudioManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CamearaResolution" HideInheritanceLine="true">
+    <Position X="0.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Script\CamearaResolution.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CharacterAdd" HideInheritanceLine="true">
+    <Position X="12" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\CharacterAdd.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CharacterRotate">
+    <Position X="9.75" Y="3" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAEgAAICAAECAAAACAAACAAAAAAAAAAAAgCAAAAAA=</HashCode>
+      <FileName>Assets\Script\CharacterRotate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CharacterSlot">
+    <Position X="12.25" Y="3" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AgEAAQAAACgAAAAAAAAAAAAQGAAAAgAAQAASACCIAAA=</HashCode>
+      <FileName>Assets\Script\CharacterSlot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CharacterStat">
+    <Position X="14.5" Y="3" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="CharacterStat.Element">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Script\CharacterStat.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="CharacterStat.Ability1">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Script\CharacterStat.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="CharacterStat.Ability2" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Script\CharacterStat.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAACACAAAAAAACAAEAAIAAAEAABEAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\CharacterStat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CrashBar">
+    <Position X="28.5" Y="3" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAQACQAIAAAAAAAAAAIAAAAAAAAAAAAAAQAAAAAAAAg=</HashCode>
+      <FileName>Assets\Script\CrashBar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CreatePanel">
+    <Position X="0.5" Y="3" Width="3" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="CreatePanel.AccData">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Script\CreatePanel.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAERAACIECAAIAAAIACBQAQICCUCFAABFgQAAAAA=</HashCode>
+      <FileName>Assets\Script\CreatePanel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameManager">
+    <Position X="31.25" Y="7.75" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="GameManager.State">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Script\GameManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABgAEAAACEAAAAAAAAAFAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Script\GameManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameOverManager">
+    <Position X="23.75" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAQQIAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>Assets\Script\GameOverManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HealthBar">
+    <Position X="23.5" Y="3" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAQAAAAAAAAABAAAAAAAgEAgAAAAA=</HashCode>
+      <FileName>Assets\Script\HealthBar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LogSystem">
+    <Position X="31" Y="3" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>EAAIAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\LogSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MainButton">
+    <Position X="33.5" Y="3" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>EIAAAAAFACAAAAAAABAAAAAAAAgAAAAAAIAAgAAAAAA=</HashCode>
+      <FileName>Assets\Script\MainButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MenuButton">
+    <Position X="36" Y="3" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>EIBBAAAAACAAAQAAAAEAAAACIAAICAAAAAAIYABAAAA=</HashCode>
+      <FileName>Assets\Script\MenuButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Monster">
+    <Position X="16.5" Y="3" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AIYoAKIAACggCAAQBAEgCACAEIAAAAEAADQDhCAIAAI=</HashCode>
+      <FileName>Assets\Script\Monster.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MonsterManager" HideInheritanceLine="true">
+    <Position X="29" Y="7.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAIAAAEAAAAAAAAAAAAgACAAAAAAACAAQAAAAA=</HashCode>
+      <FileName>Assets\Script\MonsterManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pattern">
+    <Position X="21.25" Y="3" Width="2" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="Pattern.attackType">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Script\MonsterStat.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAABAAAEAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\MonsterStat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MonsterStat">
+    <Position X="19.5" Y="3" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="MonsterStat.Element">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Script\MonsterStat.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAACACAAAAAAAAAAEAAAAQAEAABEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\MonsterStat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PanelInteract" HideInheritanceLine="true">
+    <Position X="3.75" Y="3" Width="3" />
+    <TypeIdentifier>
+      <HashCode>gbEAIAYAACAIAAAUIBACEABAAEAEAA0AAAEiEBIABBg=</HashCode>
+      <FileName>Assets\Script\PanelInteract.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Particle" HideInheritanceLine="true">
+    <Position X="13.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\Particle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerSystem" HideInheritanceLine="true">
+    <Position X="7" Y="3" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>ABUAAAAMACAAAUIhAEA4EEAAAAAEAAAAIAgAAABQA4A=</HashCode>
+      <FileName>Assets\Script\PlayerSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ScriptableStage">
+    <Position X="6.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Assets\Script\ScriptableStage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FloorData">
+    <Position X="8.75" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Assets\Script\ScriptableStage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MonsterSpawnData">
+    <Position X="5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Assets\Script\ScriptableStage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StageManager" HideInheritanceLine="true">
+    <Position X="26.25" Y="7.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAQEAQAAAAAAAAQAABAAAAAAANBAEhAAAAAAAgBAEA=</HashCode>
+      <FileName>Assets\Script\StageManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemManager" HideInheritanceLine="true">
+    <Position X="20.5" Y="7.75" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAEAFAAgAAAQAAAIAAAAAAAAAAAAAAAAQAAACAAAAEA=</HashCode>
+      <FileName>Assets\Script\SystemManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TapCount" HideInheritanceLine="true">
+    <Position X="26" Y="3" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAACAAABAAAAAIAAAABAAAAAAAAAIAAAAAAAg=</HashCode>
+      <FileName>Assets\Script\TapCount.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TouchPanel" HideInheritanceLine="true">
+    <Position X="2.5" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Assets\Script\TouchPanel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="맑은 고딕" Size="9" />
+</ClassDiagram>
