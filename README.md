@@ -8,3 +8,6 @@
 부가 구현 목표
 1. 메뉴창 캐릭터 선택 기능 구현 (구현완료)
 2. 턴제 게임 플레이 방식 구현 (구현완료)
+
+ppt 링크
+https://www.canva.com/design/DAGcR328qDc/zD5nBanr4aNkqS1TGol88g/view?utm_content=DAGcR328qDc&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hfc9ce29dbb
